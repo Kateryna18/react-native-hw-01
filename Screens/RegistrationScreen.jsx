@@ -1,7 +1,8 @@
 import React from "react";
-import { StyleSheet, View, Text, Image, TextInput, Button } from "react-native";
+import { Platform, StyleSheet, View, Text, Image, TextInput, TouchableOpacity, Button } from "react-native";
 
 export default function RegistrationScreen() {
+    console.log(Platform.OS)
   return (
     <View style={styles.registerBox}>
       <View style={styles.contentContainer}>
@@ -22,11 +23,14 @@ export default function RegistrationScreen() {
             keyboardType="email-address"
           />
           <TextInput
-            style={[styles.registerFormInput, {marginBottom: 32}]}
+            style={[styles.registerFormInput, {marginBottom: 43}]}
             placeholder="Пароль"
             keyboardType="default"
+            secureTextEntry={true}
           />
-          <Button style={styles.registerFormButton} title="Зареєстуватися" />
+            <TouchableOpacity style={styles.registerBoxButton} activeOpacity={0.8}>
+                <Text style={styles.registerButtonText}>Зареєстуватися</Text>
+            </TouchableOpacity>
           <Button
             style={styles.registerFormLink}
             title="Вже є акаунт? Увійти"
@@ -39,10 +43,7 @@ export default function RegistrationScreen() {
 
 const styles = StyleSheet.create({
   registerBox: {
-    width: "100%",
     flex: 1,
-    // alignItems: "center",
-    // justifyContent: 'center',
     backgroundColor: "#FFFFFF",
     borderTopLeftRadius: 25,
     borderTopRightRadius: 25,
@@ -73,15 +74,23 @@ const styles = StyleSheet.create({
     marginBottom: 16,
     backgroundColor: '#F6F6F6',
     borderRadius: 5,
+    borderWidth: 1,
+    borderColor: '#E8E8E8',
   },
-  registerFormButton: {
-    width: 343,
-    height: 51,
-    padding: '16px, 32px, 16px, 32px',
+  registerBoxButton: {
+    paddingBottom: 16,
+    paddingTop: 16,
+    marginBottom: 16,
     backgroundColor: '#FF6C00',
     borderRadius: 100,
   },
+  registerButtonText: {
+    textAlign: 'center',
+    fontSize: 16,
+    fontWeight: 400,
+    color: '#FFFFFF',
+  },
   registerFormLink: {
-
+    fontSize: 16,
   }
 });
