@@ -1,11 +1,13 @@
+// import React from 'react';
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View } from 'react-native';
+import RegistrationScreen from './Screens/RegistrationScreen';
 
 export default function App() {
   return (
     <View style={styles.container}>
-      <Text>Welcome to your phone. Get Starting!</Text>
       <StatusBar style="auto" />
+      <RegistrationScreen/>
     </View>
   );
 }
@@ -13,8 +15,9 @@ export default function App() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
+    paddingTop: 263,
+    backgroundColor: 'pink',
+    // alignItems: 'center',
+    // justifyContent: 'center',
   },
 });
