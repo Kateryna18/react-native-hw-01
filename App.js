@@ -131,16 +131,35 @@ export default function App() {
                 }}
                 onSubmitEditing={keyBoardHide}
               />
-              <TextInput
-              style={isFocused.password ? [styles.registerFormInput, { borderColor: "#FF6C00", backgroundColor: "#FFFFFF", marginBottom: 32 },]: [styles.registerFormInput, { marginBottom: 43}]}
-                placeholder="Пароль"
-                keyboardType="default"
-                secureTextEntry={true}
-                onFocus={() => {
-                  handleInputFocus("password");
-                }}
-                onSubmitEditing={keyBoardHide}
-              />
+              <View style={styles.passwordInputBox}>
+                <TextInput
+                  style={
+                    isFocused.password
+                      ? [
+                          styles.registerFormInput,
+                          {
+                            borderColor: "#FF6C00",
+                            backgroundColor: "#FFFFFF",
+                            marginBottom: 32,
+                          },
+                        ]
+                      : [styles.registerFormInput, { marginBottom: 43 }]
+                  }
+                  placeholder="Пароль"
+                  keyboardType="default"
+                  secureTextEntry={true}
+                  onFocus={() => {
+                    handleInputFocus("password");
+                  }}
+                  onSubmitEditing={keyBoardHide}
+                />
+                <TouchableOpacity
+                  style={styles.registerInputButton}
+                  activeOpacity={0.8}
+                >
+                  <Text style={styles.registerInputText}>Показати</Text>
+                </TouchableOpacity>
+              </View>
               {!isFocusInput && (
                 <View style={{ paddingBottom: 78 }}>
                   <TouchableOpacity
@@ -192,7 +211,8 @@ const styles = StyleSheet.create({
     fontWeight: 500,
     textAlign: "center",
   },
-  registerForm: {},
+  passwordInputBox: {
+  },
   registerFormInput: {
     height: 50,
     padding: 16,
@@ -204,6 +224,17 @@ const styles = StyleSheet.create({
     borderColor: "#E8E8E8",
     borderRadius: 5,
     borderWidth: 1,
+  },
+  registerInputButton: {
+    position: 'absolute',
+    top: 15,
+    right: 15,
+  },
+  registerInputText: {
+    fontFamily: "roboto-r",
+    fontSize: 16,
+    fontWeight: 400,
+    color: '#1B4371',
   },
   registerBoxButton: {
     paddingBottom: 16,
