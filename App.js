@@ -17,7 +17,7 @@
 //   );
 // }
 
-import React, {useState} from "react";
+import React, { useState } from "react";
 import { StatusBar } from "expo-status-bar";
 import {
   StyleSheet,
@@ -33,80 +33,130 @@ import {
   TouchableWithoutFeedback,
   Keyboard,
 } from "react-native";
-import * as Font from 'expo-font';
-import AppLoading from 'expo-app-loading';
+import * as Font from "expo-font";
+import AppLoading from "expo-app-loading";
+import Ionicons from "@expo/vector-icons/Ionicons";
 
 const fonts = async () => {
   await Font.loadAsync({
-  'roboto-r': require('./assets/fonts/Roboto-Regular.ttf'),
-  'roboto-m': require('./assets/fonts/Roboto-Medium.ttf')
-})};
+    "roboto-r": require("./assets/fonts/Roboto-Regular.ttf"),
+    "roboto-m": require("./assets/fonts/Roboto-Medium.ttf"),
+  });
+};
 
 export default function App() {
   const [isReadyfont, setIsReadyfont] = useState(false);
   const [isFocusInput, setIsFocusInput] = useState(false);
+  const [isFocused, setIsFocused] = useState({
+    login: false,
+    email: false,
+    password: false,
+  });
+  // console.log(isFocusInput)
 
   const keyBoardHide = () => {
-    setIsFocusInput(false)
-    Keyboard.dismiss()
-  }
+    setIsFocused({
+      login: false,
+      email: false,
+      password: false,
+    });
+    setIsFocusInput(false);
+    Keyboard.dismiss();
+  };
 
-  if(!isReadyfont) {
-    return (<AppLoading startAsync={fonts} onFinish={() => setIsReadyfont(true)} onError={console.warn}/>)
+  const handleInputFocus = (textInput) => {
+    setIsFocused({
+      [textInput]: true,
+    });
+    setIsFocusInput(true);
+  };
+
+  if (!isReadyfont) {
+    return (
+      <AppLoading
+        startAsync={fonts}
+        onFinish={() => setIsReadyfont(true)}
+        onError={console.warn}
+      />
+    );
   }
 
   return (
     <View style={styles.container}>
       <TouchableWithoutFeedback onPress={keyBoardHide}>
-      <ImageBackground
-        style={styles.backgroundImg}
-        source={require("./assets/photo-bg.png")}
-      >
-        <StatusBar style="auto" />
-        <KeyboardAvoidingView
-          behavior={Platform.OS === "ios" ? "padding" : "height"}
-          style={styles.registerBox}
+        <ImageBackground
+          style={styles.backgroundImg}
+          source={require("./assets/photo-bg.png")}
         >
-          <Image
-            style={styles.registerImg}
-            source={require("./assets/avatar.png")}
-          />
-          <Text style={styles.registerTittle}>Реєстрація</Text>
-          <View style={styles.registerForm}>
-            <TextInput
-              style={[styles.registerFormInput, {borderColor: isFocusInput ? "#FF6C00" :"#E8E8E8"}]}
-              placeholder="Логін"
-              keyboardType="default"
-              onFocus={() => {setIsFocusInput(true)}}
-              onSubmitEditing={keyBoardHide}
+          <StatusBar style="auto" />
+          <KeyboardAvoidingView
+            behavior={Platform.OS === "ios" ? "padding" : "height"}
+            style={styles.registerBox}
+          >
+            <Image
+              style={styles.registerImg}
+              source={require("./assets/avatar.png")}
             />
-            <TextInput
-              style={[styles.registerFormInput, {borderColor: isFocusInput ? "#FF6C00" :"#E8E8E8"}]}
-              placeholder="Адреса електронної пошти"
-              keyboardType="email-address"
-              onFocus={() => {setIsFocusInput(true)}}
-              onSubmitEditing={keyBoardHide}
-            />
-            <TextInput
-              style={[styles.registerFormInput, { marginBottom: isFocusInput ? 32 : 43 }, {borderColor: isFocusInput ? "#FF6C00" :"#E8E8E8"}]}
-              placeholder="Пароль"
-              keyboardType="default"
-              secureTextEntry={true}
-              onFocus={() => {setIsFocusInput(true)}}
-              onSubmitEditing={keyBoardHide}
-            />
-            {!isFocusInput && <View style={{paddingBottom: 78}}>
-              <TouchableOpacity
-                style={styles.registerBoxButton}
-                activeOpacity={0.8}
-              >
-                <Text style={styles.registerButtonText}>Зареєстуватися</Text>
-              </TouchableOpacity>
-                <Text style={styles.registerLink}>Вже є акаунт? Увійти</Text>
-            </View>}
-          </View>
-        </KeyboardAvoidingView>
-      </ImageBackground>
+            <Text style={styles.registerTittle}>Реєстрація</Text>
+            <View style={styles.registerForm}>
+              <TextInput
+                style={
+                  isFocused.login
+                    ? [
+                        styles.registerFormInput,
+                        { borderColor: "#FF6C00", backgroundColor: "#FFFFFF" },
+                      ]
+                    : styles.registerFormInput
+                }
+                placeholder="Логін"
+                keyboardType="default"
+                onFocus={() => {
+                  handleInputFocus("login");
+                }}
+                onSubmitEditing={keyBoardHide}
+              />
+              <TextInput
+                style={
+                  isFocused.email
+                    ? [
+                        styles.registerFormInput,
+                        { borderColor: "#FF6C00", backgroundColor: "#FFFFFF" },
+                      ]
+                    : styles.registerFormInput
+                }
+                placeholder="Адреса електронної пошти"
+                keyboardType="email-address"
+                onFocus={() => {
+                  handleInputFocus("email");
+                }}
+                onSubmitEditing={keyBoardHide}
+              />
+              <TextInput
+              style={isFocused.password ? [styles.registerFormInput, { borderColor: "#FF6C00", backgroundColor: "#FFFFFF", marginBottom: 32 },]: [styles.registerFormInput, { marginBottom: 43}]}
+                placeholder="Пароль"
+                keyboardType="default"
+                secureTextEntry={true}
+                onFocus={() => {
+                  handleInputFocus("password");
+                }}
+                onSubmitEditing={keyBoardHide}
+              />
+              {!isFocusInput && (
+                <View style={{ paddingBottom: 78 }}>
+                  <TouchableOpacity
+                    style={styles.registerBoxButton}
+                    activeOpacity={0.8}
+                  >
+                    <Text style={styles.registerButtonText}>
+                      Зареєстуватися
+                    </Text>
+                  </TouchableOpacity>
+                  <Text style={styles.registerLink}>Вже є акаунт? Увійти</Text>
+                </View>
+              )}
+            </View>
+          </KeyboardAvoidingView>
+        </ImageBackground>
       </TouchableWithoutFeedback>
     </View>
   );
@@ -137,21 +187,21 @@ const styles = StyleSheet.create({
   registerTittle: {
     paddingTop: 92,
     marginBottom: 32,
-    fontFamily: 'roboto-m',
+    fontFamily: "roboto-m",
     fontSize: 30,
     fontWeight: 500,
     textAlign: "center",
   },
-  registerForm: {
-  },
+  registerForm: {},
   registerFormInput: {
     height: 50,
     padding: 16,
     marginBottom: 16,
-    fontFamily: 'roboto-r',
+    fontFamily: "roboto-r",
     fontSize: 16,
     fontWeight: 400,
     backgroundColor: "#F6F6F6",
+    borderColor: "#E8E8E8",
     borderRadius: 5,
     borderWidth: 1,
   },
@@ -164,16 +214,16 @@ const styles = StyleSheet.create({
   },
   registerButtonText: {
     textAlign: "center",
-    fontFamily: 'roboto-r',
+    fontFamily: "roboto-r",
     fontSize: 16,
     fontWeight: 400,
     color: "#FFFFFF",
   },
   registerLink: {
-    textAlign: 'center',
-    fontFamily: 'roboto-r',
+    textAlign: "center",
+    fontFamily: "roboto-r",
     fontSize: 16,
     fontWeight: 400,
-    color: '#1B4371',
+    color: "#1B4371",
   },
 });
