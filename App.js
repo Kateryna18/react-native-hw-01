@@ -35,7 +35,7 @@ import {
 } from "react-native";
 import * as Font from "expo-font";
 import AppLoading from "expo-app-loading";
-import Ionicons from "@expo/vector-icons/Ionicons";
+import { AntDesign } from "@expo/vector-icons";
 
 const fonts = async () => {
   await Font.loadAsync({
@@ -52,7 +52,6 @@ export default function App() {
     email: false,
     password: false,
   });
-  // console.log(isFocusInput)
 
   const keyBoardHide = () => {
     setIsFocused({
@@ -93,10 +92,19 @@ export default function App() {
             behavior={Platform.OS === "ios" ? "padding" : "height"}
             style={styles.registerBox}
           >
-            <Image
-              style={styles.registerImg}
-              source={require("./assets/avatar.png")}
-            />
+            <View style={styles.registerImg}>
+              {/* <Image
+                // style={styles.registerImg}
+                source={require("./assets/avatar.png")}
+              />
+              <TouchableOpacity activeOpacity={0.8} style={styles.registerImgButton}>
+                <AntDesign name="closecircleo" size={25} color="#E8E8E8" />
+              </TouchableOpacity> */}
+              {/* ///////////////////////without photo//////////////////// */}
+              <TouchableOpacity activeOpacity={0.8} style={styles.registerImgButton}>
+                <AntDesign name="pluscircleo" size={25} color="#FF6C00"/>
+              </TouchableOpacity>
+            </View>
             <Text style={styles.registerTittle}>Реєстрація</Text>
             <View style={styles.registerForm}>
               <TextInput
@@ -202,6 +210,20 @@ const styles = StyleSheet.create({
     position: "absolute",
     top: -60,
     alignSelf: "center",
+    width: 120,
+    height: 120,
+    backgroundColor: "#F6F6F6",
+    borderRadius: 16,
+  },
+  registerImgButton: {
+    position: "absolute",
+    top: 81,
+    left: 103,
+    backgroundColor: "#FFFFFF",
+    borderRadius: "50%",
+  },
+  registerButtonIcon: {
+    backgroundColor: "white",
   },
   registerTittle: {
     paddingTop: 92,
@@ -211,8 +233,7 @@ const styles = StyleSheet.create({
     fontWeight: 500,
     textAlign: "center",
   },
-  passwordInputBox: {
-  },
+  passwordInputBox: {},
   registerFormInput: {
     height: 50,
     padding: 16,
@@ -226,7 +247,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
   },
   registerInputButton: {
-    position: 'absolute',
+    position: "absolute",
     top: 15,
     right: 15,
   },
@@ -234,7 +255,7 @@ const styles = StyleSheet.create({
     fontFamily: "roboto-r",
     fontSize: 16,
     fontWeight: 400,
-    color: '#1B4371',
+    color: "#1B4371",
   },
   registerBoxButton: {
     paddingBottom: 16,
