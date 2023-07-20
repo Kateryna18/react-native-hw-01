@@ -182,7 +182,7 @@ const styles = StyleSheet.create({
     color: "#FFFFFF",
   },
   loginLink: {
-    paddingBottom: 144,
+    paddingBottom: Platform.OS === "ios" ? 144 : 111,
     textAlign: "center",
     fontFamily: "roboto-r",
     fontSize: 16,

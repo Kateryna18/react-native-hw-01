@@ -48,7 +48,7 @@ export default function RegistrationScreen() {
       >
         <StatusBar style="auto" />
         <KeyboardAvoidingView
-          behavior={Platform.OS === "ios" ? "padding" : "height"}
+          behavior={Platform.OS === "ios" && "padding"}
           style={styles.registerBox}
         >
           <View style={styles.registerImg}>
@@ -131,7 +131,7 @@ export default function RegistrationScreen() {
               </TouchableOpacity>
             </View>
             {!isFocusInput && (
-              <View style={{ paddingBottom: 78 }}>
+              <View style={{ paddingBottom: 0 }}>
                 <TouchableOpacity
                   style={styles.registerBoxButton}
                   activeOpacity={0.8}
@@ -155,8 +155,8 @@ const styles = StyleSheet.create({
     resizeMode: "cover",
   },
   registerBox: {
-    paddingLeft: 16,
-    paddingRight: 16,
+    paddingTop: 92,
+    paddingHorizontal: 16,
     backgroundColor: "#FFFFFF",
     borderTopLeftRadius: 25,
     borderTopRightRadius: 25,
@@ -175,27 +175,35 @@ const styles = StyleSheet.create({
     top: 81,
     left: 103,
     backgroundColor: "#FFFFFF",
-    borderRadius: "50%",
+    borderRadius: 20,
   },
   registerButtonIcon: {
     backgroundColor: "white",
   },
   registerTittle: {
-    paddingTop: 92,
     marginBottom: 32,
-    fontFamily: "roboto-m",
     fontSize: 30,
-    fontWeight: 500,
     textAlign: "center",
+    ...Platform.select({
+      ios: {
+        fontFamily: "roboto-m", 
+        fontWeight: "bold",
+
+      },
+      android: {
+        fontFamily: "Roboto", 
+        fontWeight: "500",
+
+      },
+    }),
   },
-  passwordInputBox: {},
   registerFormInput: {
     height: 50,
     padding: 16,
     marginBottom: 16,
     fontFamily: "roboto-r",
     fontSize: 16,
-    fontWeight: 400,
+    fontWeight: "normal",
     backgroundColor: "#F6F6F6",
     borderColor: "#E8E8E8",
     borderRadius: 5,
@@ -227,6 +235,7 @@ const styles = StyleSheet.create({
     color: "#FFFFFF",
   },
   registerLink: {
+    paddingBottom: Platform.OS === "ios" ? 144 : 111,
     textAlign: "center",
     fontFamily: "roboto-r",
     fontSize: 16,
