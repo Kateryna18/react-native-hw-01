@@ -9,11 +9,9 @@ import {
   TextInput,
   TouchableOpacity,
   Text,
-  Image,
   TouchableWithoutFeedback,
   Keyboard,
 } from "react-native";
-import { AntDesign } from "@expo/vector-icons";
 
 export default function LoginScreen() {
   const [isFocusInput, setIsFocusInput] = useState(false);
@@ -48,7 +46,7 @@ export default function LoginScreen() {
       >
         <StatusBar style="auto" />
         <KeyboardAvoidingView
-          behavior={Platform.OS === "ios" ? "padding" : "height"}
+          behavior={Platform.OS === "ios" && "padding"}
           style={styles.loginBox}
         >
           <Text style={styles.loginTittle}>Увійти</Text>
@@ -99,7 +97,7 @@ export default function LoginScreen() {
               </TouchableOpacity>
             </View>
             {!isFocusInput && (
-              <View style={{ paddingBottom: 78 }}>
+              <View style={{ paddingBottom: 0 }}>
                 <TouchableOpacity
                   style={styles.loginBoxButton}
                   activeOpacity={0.8}
@@ -123,19 +121,28 @@ const styles = StyleSheet.create({
     resizeMode: "cover",
   },
   loginBox: {
-    paddingLeft: 16,
-    paddingRight: 16,
+    paddingTop: 32,
+    paddingHorizontal: 16,
     backgroundColor: "#FFFFFF",
     borderTopLeftRadius: 25,
     borderTopRightRadius: 25,
   },
   loginTittle: {
-    paddingTop: 32,
     marginBottom: 32,
-    fontFamily: "roboto-m",
-    fontSize: 30,
-    fontWeight: 500,
     textAlign: "center",
+    fontSize: 30,
+    ...Platform.select({
+      ios: {
+        fontFamily: "roboto-m", 
+        fontWeight: "bold",
+
+      },
+      android: {
+        fontFamily: "Roboto", 
+        fontWeight: "500",
+
+      },
+    }),
   },
   loginFormInput: {
     height: 50,
@@ -143,7 +150,7 @@ const styles = StyleSheet.create({
     marginBottom: 16,
     fontFamily: "roboto-r",
     fontSize: 16,
-    fontWeight: 400,
+    fontWeight: "normal",
     backgroundColor: "#F6F6F6",
     borderColor: "#E8E8E8",
     borderRadius: 5,
@@ -175,7 +182,7 @@ const styles = StyleSheet.create({
     color: "#FFFFFF",
   },
   loginLink: {
-    paddingBottom: 111,
+    paddingBottom: 144,
     textAlign: "center",
     fontFamily: "roboto-r",
     fontSize: 16,
