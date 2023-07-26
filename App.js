@@ -7,11 +7,13 @@ import * as Font from "expo-font";
 import AppLoading from "expo-app-loading";
 import RegistrationScreen from "./Screens/RegistrationScreen";
 import LoginScreen from "./Screens/LoginScreen";
+import RobotoRegular from './assets/fonts/Roboto-Regular.ttf';
+import RobotoMedium from './assets/fonts/Roboto-Medium.ttf';
 
 const fonts = async () => {
   await Font.loadAsync({
-    "roboto-r": require("./assets/fonts/Roboto-Regular.ttf"),
-    "roboto-m": require("./assets/fonts/Roboto-Medium.ttf"),
+    "roboto-r": RobotoRegular,
+    "roboto-m": RobotoMedium,
   });
 };
 

@@ -12,6 +12,7 @@ import {
   TouchableWithoutFeedback,
   Keyboard,
 } from "react-native";
+import bckImage from "../assets/photo-bg.png"
 
 export default function LoginScreen() {
   const [isFocusInput, setIsFocusInput] = useState(false);
@@ -42,7 +43,7 @@ export default function LoginScreen() {
     <TouchableWithoutFeedback onPress={keyBoardHide}>
       <ImageBackground
         style={styles.backgroundImg}
-        source={require("../assets/photo-bg.png")}
+        source={bckImage}
       >
         <StatusBar style="auto" />
         <KeyboardAvoidingView
