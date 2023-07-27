@@ -1,18 +1,16 @@
 import React, { useState } from "react";
-import { StatusBar } from "expo-status-bar";
+
 import {
   Platform,
   StyleSheet,
-  ImageBackground,
-  KeyboardAvoidingView,
   View,
+  KeyboardAvoidingView,
   TextInput,
   TouchableOpacity,
   Text,
   TouchableWithoutFeedback,
   Keyboard,
 } from "react-native";
-import bckImage from "../assets/photo-bg.png"
 
 export default function LoginScreen() {
   const [isFocusInput, setIsFocusInput] = useState(false);
@@ -39,87 +37,94 @@ export default function LoginScreen() {
     setIsFocusInput(true);
   };
 
-
   const handleSubmit = () => {
     const registerData = {
       email,
       password,
-    }
-    console.log(registerData)
-    clearRegisterForm()
-    
-  }
+    };
+    console.log(registerData);
+    clearRegisterForm();
+  };
 
   const clearRegisterForm = () => {
-    setEmail("")
-    setPassword("")
-  }
+    setEmail("");
+    setPassword("");
+  };
 
   return (
-    <TouchableWithoutFeedback onPress={keyBoardHide}>
-      <ImageBackground
-        style={styles.backgroundImg}
-        source={bckImage}
+    <>
+      <KeyboardAvoidingView
+        behavior={Platform.OS === "ios" ? "padding" : "height"}
+        style={styles.loginBox}
+        keyboardVerticalOffset={32}
       >
-        <StatusBar style="auto" />
-        <KeyboardAvoidingView
-          behavior={Platform.OS === "ios" ? "padding" : "height"}
-          style={styles.loginBox}
-          keyboardVerticalOffset={32}
-        >
-          <Text style={styles.loginTittle}>Увійти</Text>
-          <View >
+        <Text style={styles.loginTittle}>Увійти</Text>
+        <View>
+          <TextInput
+            style={[
+              styles.loginFormInput,
+              styles.loginEmailInput,
+              isFocused.email && {
+                borderColor: "#FF6C00",
+                backgroundColor: "#FFFFFF",
+              },
+            ]}
+            placeholder="Адреса електронної пошти"
+            keyboardType="email-address"
+            onFocus={() => {
+              handleInputFocus("email");
+            }}
+            onSubmitEditing={keyBoardHide}
+            value={email}
+            onChangeText={setEmail}
+          />
+          <View style={styles.passwordInputBox}>
             <TextInput
-              style={
-                [styles.loginFormInput, styles.loginEmailInput, 
-                  isFocused.email && { borderColor: "#FF6C00", backgroundColor: "#FFFFFF"}]
-              }
-              placeholder="Адреса електронної пошти"
-              keyboardType="email-address"
+              style={[
+                styles.loginFormInput,
+                styles.loginEmailInput,
+                isFocused.password && {
+                  borderColor: "#FF6C00",
+                  backgroundColor: "#FFFFFF",
+                },
+              ]}
+              placeholder="Пароль"
+              keyboardType="default"
+              secureTextEntry={true}
               onFocus={() => {
-                handleInputFocus("email");
+                handleInputFocus("password");
               }}
               onSubmitEditing={keyBoardHide}
-              value={email}
-              onChangeText={setEmail}
+              value={password}
+              onChangeText={setPassword}
             />
-            <View style={styles.passwordInputBox}>
-              <TextInput
-                style={
-                  [styles.loginFormInput, styles.loginEmailInput, 
-                    isFocused.password && { borderColor: "#FF6C00", backgroundColor: "#FFFFFF"}]
-                }
-                placeholder="Пароль"
-                keyboardType="default"
-                secureTextEntry={true}
-                onFocus={() => {
-                  handleInputFocus("password");
-                }}
-                onSubmitEditing={keyBoardHide}
-                value={password}
-                onChangeText={setPassword}
-              />
-              <TouchableOpacity
-                style={styles.loginInputButton}
-                activeOpacity={0.8}
-              >
-                <Text style={styles.loginInputText}>Показати</Text>
-              </TouchableOpacity>
-            </View>
+            <TouchableOpacity
+              style={styles.loginInputButton}
+              activeOpacity={0.8}
+            >
+              <Text style={styles.loginInputText}>Показати</Text>
+            </TouchableOpacity>
           </View>
-        </KeyboardAvoidingView>
-        <View style={{ paddingTop: 43, paddingBottom: 0, backgroundColor: "#FFFFFF", paddingHorizontal: 16, }}>
-                <TouchableOpacity
-                  style={styles.loginBoxButton}
-                  activeOpacity={0.8}
-                  onPress={handleSubmit}
-                >
-                  <Text style={styles.loginButtonText}>Увійти</Text>
-                </TouchableOpacity>
-                <Text style={styles.loginLink}>Немає акаунту? Зареєструватися</Text>
-              </View>
-      </ImageBackground>
-    </TouchableWithoutFeedback>
+        </View>
+      </KeyboardAvoidingView>
+      <View
+        style={{
+          paddingTop: 43,
+          paddingBottom: 0,
+          backgroundColor: "#FFFFFF",
+          paddingHorizontal: 16,
+        }}
+      >
+        <TouchableOpacity
+          style={styles.loginBoxButton}
+          activeOpacity={0.8}
+          onPress={handleSubmit}
+        >
+          <Text style={styles.loginButtonText}>Увійти</Text>
+        </TouchableOpacity>
+        <Text style={styles.loginLink}>Немає акаунту? Зареєструватися</Text>
+      </View>
+    </>
   );
 }
 
@@ -142,14 +147,12 @@ const styles = StyleSheet.create({
     fontSize: 30,
     ...Platform.select({
       ios: {
-        fontFamily: "roboto-m", 
+        fontFamily: "roboto-m",
         fontWeight: "bold",
-
       },
       android: {
-        fontFamily: "Roboto", 
+        fontFamily: "Roboto",
         fontWeight: "500",
-
       },
     }),
   },
@@ -168,7 +171,7 @@ const styles = StyleSheet.create({
   loginEmailInput: {
     marginBottom: 16,
   },
-   loginInputButton: {
+  loginInputButton: {
     position: "absolute",
     top: 15,
     right: 15,
