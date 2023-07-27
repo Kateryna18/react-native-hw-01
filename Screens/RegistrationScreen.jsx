@@ -14,10 +14,12 @@ import {
   Keyboard,
 } from "react-native";
 import { AntDesign } from "@expo/vector-icons";
-import bckImage from "../assets/photo-bg.png"
+import bckImage from "../assets/photo-bg.png";
 
 export default function RegistrationScreen() {
-  const [isFocusInput, setIsFocusInput] = useState(false);
+  const [login, setLogin] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const [isFocused, setIsFocused] = useState({
     login: false,
     email: false,
@@ -30,7 +32,6 @@ export default function RegistrationScreen() {
       email: false,
       password: false,
     });
-    setIsFocusInput(false);
     Keyboard.dismiss();
   };
 
@@ -38,19 +39,34 @@ export default function RegistrationScreen() {
     setIsFocused({
       [textInput]: true,
     });
-    setIsFocusInput(true);
   };
+
+
+  const handleSubmit = () => {
+    const registerData = {
+      login,
+      email,
+      password,
+    }
+    console.log(registerData)
+    clearRegisterForm()
+    
+  }
+
+  const clearRegisterForm = () => {
+    setLogin("")
+    setEmail("")
+    setPassword("")
+  }
 
   return (
     <TouchableWithoutFeedback onPress={keyBoardHide}>
-      <ImageBackground
-        style={styles.backgroundImg}
-        source={bckImage}
-      >
+      <ImageBackground style={styles.backgroundImg} source={bckImage}>
         <StatusBar style="auto" />
         <KeyboardAvoidingView
-          behavior={Platform.OS === "ios" && "padding"}
+          behavior={Platform.OS === "ios" ? "padding" : "height"}
           style={styles.registerBox}
+          keyboardVerticalOffset={32}
         >
           <View style={styles.registerImg}>
             {/* <Image
@@ -69,15 +85,11 @@ export default function RegistrationScreen() {
             </TouchableOpacity>
           </View>
           <Text style={styles.registerTittle}>Реєстрація</Text>
-          <View style={styles.registerForm}>
+          <View>
             <TextInput
               style={
-                isFocused.login
-                  ? [
-                      styles.registerFormInput,
-                      { borderColor: "#FF6C00", backgroundColor: "#FFFFFF" },
-                    ]
-                  : styles.registerFormInput
+                [styles.registerFormInput, styles.registerLoginInput, 
+                  isFocused.login && { borderColor: "#FF6C00", backgroundColor: "#FFFFFF"}]
               }
               placeholder="Логін"
               keyboardType="default"
@@ -85,15 +97,13 @@ export default function RegistrationScreen() {
                 handleInputFocus("login");
               }}
               onSubmitEditing={keyBoardHide}
+              value={login}
+              onChangeText={setLogin}
             />
             <TextInput
               style={
-                isFocused.email
-                  ? [
-                      styles.registerFormInput,
-                      { borderColor: "#FF6C00", backgroundColor: "#FFFFFF" },
-                    ]
-                  : styles.registerFormInput
+                [styles.registerFormInput, styles.registerEmailInput, 
+                  isFocused.email && { borderColor: "#FF6C00", backgroundColor: "#FFFFFF"}]
               }
               placeholder="Адреса електронної пошти"
               keyboardType="email-address"
@@ -101,6 +111,8 @@ export default function RegistrationScreen() {
                 handleInputFocus("email");
               }}
               onSubmitEditing={keyBoardHide}
+              value={email}
+              onChangeText={setEmail}
             />
             <View style={styles.passwordInputBox}>
               <TextInput
@@ -111,10 +123,9 @@ export default function RegistrationScreen() {
                         {
                           borderColor: "#FF6C00",
                           backgroundColor: "#FFFFFF",
-                          marginBottom: 32,
                         },
                       ]
-                    : [styles.registerFormInput, { marginBottom: 43 }]
+                    : [styles.registerFormInput]
                 }
                 placeholder="Пароль"
                 keyboardType="default"
@@ -123,6 +134,8 @@ export default function RegistrationScreen() {
                   handleInputFocus("password");
                 }}
                 onSubmitEditing={keyBoardHide}
+                value={password}
+                onChangeText={setPassword}
               />
               <TouchableOpacity
                 style={styles.registerInputButton}
@@ -131,7 +144,7 @@ export default function RegistrationScreen() {
                 <Text style={styles.registerInputText}>Показати</Text>
               </TouchableOpacity>
             </View>
-            {!isFocusInput && (
+            {/* {!isFocusInput && (
               <View style={{ paddingBottom: 0 }}>
                 <TouchableOpacity
                   style={styles.registerBoxButton}
@@ -141,9 +154,19 @@ export default function RegistrationScreen() {
                 </TouchableOpacity>
                 <Text style={styles.registerLink}>Вже є акаунт? Увійти</Text>
               </View>
-            )}
+            )} */}
           </View>
         </KeyboardAvoidingView>
+        <View style={{ paddingTop: 43, paddingBottom: 0, backgroundColor: "#FFFFFF", paddingHorizontal: 16,}}>
+              <TouchableOpacity
+                style={styles.registerBoxButton}
+                activeOpacity={0.8}
+                onPress={handleSubmit}
+              >
+                <Text style={styles.registerButtonText}>Зареєстуватися</Text>
+              </TouchableOpacity>
+              <Text style={styles.registerLink}>Вже є акаунт? Увійти</Text>
+            </View>
       </ImageBackground>
     </TouchableWithoutFeedback>
   );
@@ -187,21 +210,18 @@ const styles = StyleSheet.create({
     textAlign: "center",
     ...Platform.select({
       ios: {
-        fontFamily: "roboto-m", 
+        fontFamily: "roboto-m",
         fontWeight: "bold",
-
       },
       android: {
-        fontFamily: "Roboto", 
+        fontFamily: "Roboto",
         fontWeight: "500",
-
       },
     }),
   },
   registerFormInput: {
     height: 50,
     padding: 16,
-    marginBottom: 16,
     fontFamily: "roboto-r",
     fontSize: 16,
     fontWeight: "normal",
@@ -209,6 +229,12 @@ const styles = StyleSheet.create({
     borderColor: "#E8E8E8",
     borderRadius: 5,
     borderWidth: 1,
+  },
+  registerLoginInput: {
+    marginBottom: 16,
+  },
+  registerEmailInput: {
+    marginBottom: 16,
   },
   registerInputButton: {
     position: "absolute",
@@ -236,7 +262,7 @@ const styles = StyleSheet.create({
     color: "#FFFFFF",
   },
   registerLink: {
-    paddingBottom: Platform.OS === "ios" ? 144 : 111,
+    paddingBottom: Platform.OS === "ios" ? 78 : 111,
     textAlign: "center",
     fontFamily: "roboto-r",
     fontSize: 16,

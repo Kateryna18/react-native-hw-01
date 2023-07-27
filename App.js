@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import {
   StyleSheet,
   View,
+  TouchableWithoutFeedback,
+  Keyboard,
 } from "react-native";
 import * as Font from "expo-font";
 import AppLoading from "expo-app-loading";
@@ -30,11 +32,17 @@ export default function App() {
     );
   }
 
+  const keyBoardHide = () => {
+    Keyboard.dismiss();
+  };
+
   return (
+    <TouchableWithoutFeedback onPress={keyBoardHide}>
     <View style={styles.container}>
-      <RegistrationScreen/>
+      <RegistrationScreen />
       {/* <LoginScreen/> */}
     </View>
+    </TouchableWithoutFeedback>
   );
 }
 
