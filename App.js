@@ -39,8 +39,8 @@ export default function App() {
   return (
     <TouchableWithoutFeedback onPress={keyBoardHide}>
     <View style={styles.container}>
-      <RegistrationScreen />
-      {/* <LoginScreen/> */}
+      {/* <RegistrationScreen /> */}
+      <LoginScreen/>
     </View>
     </TouchableWithoutFeedback>
   );

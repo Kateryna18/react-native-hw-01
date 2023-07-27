@@ -16,15 +16,15 @@ import bckImage from "../assets/photo-bg.png"
 
 export default function LoginScreen() {
   const [isFocusInput, setIsFocusInput] = useState(false);
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const [isFocused, setIsFocused] = useState({
-    login: false,
     email: false,
     password: false,
   });
 
   const keyBoardHide = () => {
     setIsFocused({
-      login: false,
       email: false,
       password: false,
     });
@@ -39,6 +39,22 @@ export default function LoginScreen() {
     setIsFocusInput(true);
   };
 
+
+  const handleSubmit = () => {
+    const registerData = {
+      email,
+      password,
+    }
+    console.log(registerData)
+    clearRegisterForm()
+    
+  }
+
+  const clearRegisterForm = () => {
+    setEmail("")
+    setPassword("")
+  }
+
   return (
     <TouchableWithoutFeedback onPress={keyBoardHide}>
       <ImageBackground
@@ -47,19 +63,16 @@ export default function LoginScreen() {
       >
         <StatusBar style="auto" />
         <KeyboardAvoidingView
-          behavior={Platform.OS === "ios" && "padding"}
+          behavior={Platform.OS === "ios" ? "padding" : "height"}
           style={styles.loginBox}
+          keyboardVerticalOffset={32}
         >
           <Text style={styles.loginTittle}>Увійти</Text>
-          <View style={styles.registerForm}>
+          <View >
             <TextInput
               style={
-                isFocused.email
-                  ? [
-                      styles.loginFormInput,
-                      { borderColor: "#FF6C00", backgroundColor: "#FFFFFF" },
-                    ]
-                  : styles.loginFormInput
+                [styles.loginFormInput, styles.loginEmailInput, 
+                  isFocused.email && { borderColor: "#FF6C00", backgroundColor: "#FFFFFF"}]
               }
               placeholder="Адреса електронної пошти"
               keyboardType="email-address"
@@ -67,20 +80,14 @@ export default function LoginScreen() {
                 handleInputFocus("email");
               }}
               onSubmitEditing={keyBoardHide}
+              value={email}
+              onChangeText={setEmail}
             />
             <View style={styles.passwordInputBox}>
               <TextInput
                 style={
-                  isFocused.password
-                    ? [
-                        styles.loginFormInput,
-                        {
-                          borderColor: "#FF6C00",
-                          backgroundColor: "#FFFFFF",
-                          marginBottom: 32,
-                        },
-                      ]
-                    : [styles.loginFormInput, { marginBottom: 43 }]
+                  [styles.loginFormInput, styles.loginEmailInput, 
+                    isFocused.password && { borderColor: "#FF6C00", backgroundColor: "#FFFFFF"}]
                 }
                 placeholder="Пароль"
                 keyboardType="default"
@@ -89,6 +96,8 @@ export default function LoginScreen() {
                   handleInputFocus("password");
                 }}
                 onSubmitEditing={keyBoardHide}
+                value={password}
+                onChangeText={setPassword}
               />
               <TouchableOpacity
                 style={styles.loginInputButton}
@@ -97,19 +106,18 @@ export default function LoginScreen() {
                 <Text style={styles.loginInputText}>Показати</Text>
               </TouchableOpacity>
             </View>
-            {!isFocusInput && (
-              <View style={{ paddingBottom: 0 }}>
+          </View>
+        </KeyboardAvoidingView>
+        <View style={{ paddingTop: 43, paddingBottom: 0, backgroundColor: "#FFFFFF", paddingHorizontal: 16, }}>
                 <TouchableOpacity
                   style={styles.loginBoxButton}
                   activeOpacity={0.8}
+                  onPress={handleSubmit}
                 >
                   <Text style={styles.loginButtonText}>Увійти</Text>
                 </TouchableOpacity>
                 <Text style={styles.loginLink}>Немає акаунту? Зареєструватися</Text>
               </View>
-            )}
-          </View>
-        </KeyboardAvoidingView>
       </ImageBackground>
     </TouchableWithoutFeedback>
   );
@@ -148,7 +156,7 @@ const styles = StyleSheet.create({
   loginFormInput: {
     height: 50,
     padding: 16,
-    marginBottom: 16,
+    // marginBottom: 16,
     fontFamily: "roboto-r",
     fontSize: 16,
     fontWeight: "normal",
@@ -156,6 +164,9 @@ const styles = StyleSheet.create({
     borderColor: "#E8E8E8",
     borderRadius: 5,
     borderWidth: 1,
+  },
+  loginEmailInput: {
+    marginBottom: 16,
   },
    loginInputButton: {
     position: "absolute",
