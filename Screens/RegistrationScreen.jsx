@@ -12,6 +12,7 @@ import {
   Image,
   TouchableWithoutFeedback,
   Keyboard,
+  Alert,
 } from "react-native";
 import { AntDesign } from "@expo/vector-icons";
 import bckImage from "../assets/photo-bg.png";
@@ -25,6 +26,7 @@ export default function RegistrationScreen() {
     email: false,
     password: false,
   });
+  const [isShowPassword, setShowPassword] = useState(true)
 
   const keyBoardHide = () => {
     setIsFocused({
@@ -48,9 +50,14 @@ export default function RegistrationScreen() {
       email,
       password,
     }
+
+    if (!email || !password || !login) {
+      Alert.alert("Error", "Всі поля мають бути обов'язково заповнені")
+      return
+    }
+
     console.log(registerData)
     clearRegisterForm()
-    
   }
 
   const clearRegisterForm = () => {
@@ -61,6 +68,7 @@ export default function RegistrationScreen() {
 
   return (
     <TouchableWithoutFeedback onPress={keyBoardHide}>
+      <View style={styles.mainContainer}>
       <ImageBackground style={styles.backgroundImg} source={bckImage}>
         <StatusBar style="auto" />
         <KeyboardAvoidingView
@@ -91,6 +99,8 @@ export default function RegistrationScreen() {
                 [styles.registerFormInput, styles.registerLoginInput, 
                   isFocused.login && { borderColor: "#FF6C00", backgroundColor: "#FFFFFF"}]
               }
+              selectionColor={"#FF6C00"}
+              enterKeyHint={'next'}
               placeholder="Логін"
               keyboardType="default"
               onFocus={() => {
@@ -105,6 +115,8 @@ export default function RegistrationScreen() {
                 [styles.registerFormInput, styles.registerEmailInput, 
                   isFocused.email && { borderColor: "#FF6C00", backgroundColor: "#FFFFFF"}]
               }
+              selectionColor={"#FF6C00"}
+              enterKeyHint={'next'}
               placeholder="Адреса електронної пошти"
               keyboardType="email-address"
               onFocus={() => {
@@ -127,9 +139,11 @@ export default function RegistrationScreen() {
                       ]
                     : [styles.registerFormInput]
                 }
+                selectionColor={"#FF6C00"}
+                enterKeyHint={'next'}
                 placeholder="Пароль"
                 keyboardType="default"
-                secureTextEntry={true}
+                secureTextEntry={isShowPassword}
                 onFocus={() => {
                   handleInputFocus("password");
                 }}
@@ -140,21 +154,11 @@ export default function RegistrationScreen() {
               <TouchableOpacity
                 style={styles.registerInputButton}
                 activeOpacity={0.8}
+                onPress={() => setShowPassword(!isShowPassword)}
               >
                 <Text style={styles.registerInputText}>Показати</Text>
               </TouchableOpacity>
             </View>
-            {/* {!isFocusInput && (
-              <View style={{ paddingBottom: 0 }}>
-                <TouchableOpacity
-                  style={styles.registerBoxButton}
-                  activeOpacity={0.8}
-                >
-                  <Text style={styles.registerButtonText}>Зареєстуватися</Text>
-                </TouchableOpacity>
-                <Text style={styles.registerLink}>Вже є акаунт? Увійти</Text>
-              </View>
-            )} */}
           </View>
         </KeyboardAvoidingView>
         <View style={{ paddingTop: 43, paddingBottom: 0, backgroundColor: "#FFFFFF", paddingHorizontal: 16,}}>
@@ -168,15 +172,20 @@ export default function RegistrationScreen() {
               <Text style={styles.registerLink}>Вже є акаунт? Увійти</Text>
             </View>
       </ImageBackground>
+      </View>
     </TouchableWithoutFeedback>
   );
 }
 
 const styles = StyleSheet.create({
+  mainContainer: {
+    flex: 1,
+  },
   backgroundImg: {
     flex: 1,
     justifyContent: "flex-end",
     resizeMode: "cover",
+    backgroundColor: "#E8E8E8",
   },
   registerBox: {
     paddingTop: 92,
