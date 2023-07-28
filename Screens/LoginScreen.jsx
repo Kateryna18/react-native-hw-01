@@ -66,7 +66,7 @@ export default function LoginScreen() {
         <ImageBackground style={styles.backgroundImg} source={bckImage}>
           <StatusBar style="auto" />
           <KeyboardAvoidingView
-            behavior={Platform.OS === "ios" ? "padding" : "height"}
+            behavior={"padding"}
             style={styles.loginBox}
             keyboardVerticalOffset={32}
           >
@@ -96,7 +96,6 @@ export default function LoginScreen() {
                 <TextInput
                   style={[
                     styles.loginFormInput,
-                    styles.loginEmailInput,
                     isFocused.password && {
                       borderColor: "#FF6C00",
                       backgroundColor: "#FFFFFF",
@@ -182,7 +181,6 @@ const styles = StyleSheet.create({
   loginFormInput: {
     height: 50,
     padding: 16,
-    // marginBottom: 16,
     fontFamily: "roboto-r",
     fontSize: 16,
     fontWeight: "normal",
@@ -220,7 +218,7 @@ const styles = StyleSheet.create({
     color: "#FFFFFF",
   },
   loginLink: {
-    paddingBottom: Platform.OS === "ios" ? 144 : 111,
+    paddingBottom: 144,
     textAlign: "center",
     fontFamily: "roboto-r",
     fontSize: 16,

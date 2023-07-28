@@ -72,7 +72,7 @@ export default function RegistrationScreen() {
       <ImageBackground style={styles.backgroundImg} source={bckImage}>
         <StatusBar style="auto" />
         <KeyboardAvoidingView
-          behavior={Platform.OS === "ios" ? "padding" : "height"}
+          behavior={"padding"}
           style={styles.registerBox}
           keyboardVerticalOffset={32}
         >
@@ -271,7 +271,7 @@ const styles = StyleSheet.create({
     color: "#FFFFFF",
   },
   registerLink: {
-    paddingBottom: Platform.OS === "ios" ? 78 : 111,
+    paddingBottom: 78,
     textAlign: "center",
     fontFamily: "roboto-r",
     fontSize: 16,
