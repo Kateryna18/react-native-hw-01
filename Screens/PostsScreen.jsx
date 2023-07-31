@@ -8,9 +8,9 @@ import {
   TouchableOpacity,
   KeyboardAvoidingView,
 } from "react-native";
-import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 
-const {Navigator, Screen} = createBottomTabNavigator();
+
+
 
 export default function PostsScreen() {
   return (
