@@ -14,7 +14,7 @@ import {
   Alert,
 } from "react-native";
 import bckImage from "../assets/photo-bg.png";
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation } from "@react-navigation/native";
 
 export default function LoginScreen() {
   const [email, setEmail] = useState("");
@@ -25,7 +25,6 @@ export default function LoginScreen() {
   });
   const [isShowPassword, setShowPassword] = useState(true);
   const navigation = useNavigation();
-
 
   const keyBoardHide = () => {
     setIsFocused({
@@ -41,7 +40,6 @@ export default function LoginScreen() {
     });
   };
 
-
   const handleSubmit = () => {
     const registerData = {
       email,
@@ -49,8 +47,8 @@ export default function LoginScreen() {
     };
 
     if (!email || !password) {
-      Alert.alert("Error", "Всі поля мають бути обов'язково заповнені")
-      return
+      Alert.alert("Error", "Всі поля мають бути обов'язково заповнені");
+      return;
     }
 
     console.log(registerData);
@@ -84,7 +82,7 @@ export default function LoginScreen() {
                   },
                 ]}
                 selectionColor={"#FF6C00"}
-                enterKeyHint={'next'}
+                enterKeyHint={"next"}
                 placeholder="Адреса електронної пошти"
                 keyboardType="email-address"
                 onFocus={() => {
@@ -104,7 +102,7 @@ export default function LoginScreen() {
                     },
                   ]}
                   selectionColor={"#FF6C00"}
-                  enterKeyHint={'next'}
+                  enterKeyHint={"next"}
                   placeholder="Пароль"
                   keyboardType="default"
                   secureTextEntry={isShowPassword}
@@ -140,7 +138,15 @@ export default function LoginScreen() {
             >
               <Text style={styles.loginButtonText}>Увійти</Text>
             </TouchableOpacity>
-            <Text style={styles.loginLink} onPress={()=>navigation.navigate("Registration")}>Немає акаунту? Зареєструватися</Text>
+            <Text style={styles.loginLink}>
+              Немає акаунту?{" "}
+              <Text
+                style={[styles.loginLink, {textDecorationLine: 'underline',}]}
+                onPress={() => navigation.navigate("Registration")}
+              >
+                Зареєструватися
+              </Text>
+            </Text>
           </View>
         </ImageBackground>
       </View>

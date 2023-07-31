@@ -4,6 +4,7 @@ import * as Font from "expo-font";
 import AppLoading from "expo-app-loading";
 import RegistrationScreen from "./Screens/RegistrationScreen";
 import LoginScreen from "./Screens/LoginScreen";
+import PostsScreen from "./Screens/PostsScreen";
 import RobotoRegular from "./assets/fonts/Roboto-Regular.ttf";
 import RobotoMedium from "./assets/fonts/Roboto-Medium.ttf";
 import { NavigationContainer } from "@react-navigation/native";
@@ -35,8 +36,9 @@ export default function App() {
   return (
     <NavigationContainer>
       <Navigator initialRouteName="Login">
-        <Screen name="Registration" component={RegistrationScreen}/>
-        <Screen name="Login" component={LoginScreen}/>
+        {/* <Screen name="Registration" component={RegistrationScreen} options={{ headerShown: false, }}/>
+        <Screen name="Login" component={LoginScreen} options={{ headerShown: false, }}/> */}
+        <Screen name="PostsScreen" component={PostsScreen} options={{ title: "Публікації" }}/>
       </Navigator>
   </NavigationContainer>
   );

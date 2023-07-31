@@ -16,7 +16,7 @@ import {
 } from "react-native";
 import { AntDesign } from "@expo/vector-icons";
 import bckImage from "../assets/photo-bg.png";
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation } from "@react-navigation/native";
 
 export default function RegistrationScreen() {
   const [login, setLogin] = useState("");
@@ -29,7 +29,6 @@ export default function RegistrationScreen() {
   });
   const [isShowPassword, setShowPassword] = useState(true);
   const navigation = useNavigation();
-
 
   const keyBoardHide = () => {
     setIsFocused({
@@ -46,135 +45,159 @@ export default function RegistrationScreen() {
     });
   };
 
-
   const handleSubmit = () => {
     const registerData = {
       login,
       email,
       password,
-    }
+    };
 
     if (!email || !password || !login) {
-      Alert.alert("Error", "Всі поля мають бути обов'язково заповнені")
-      return
+      Alert.alert("Error", "Всі поля мають бути обов'язково заповнені");
+      return;
     }
 
-    console.log(registerData)
-    clearRegisterForm()
-  }
+    console.log(registerData);
+    clearRegisterForm();
+  };
 
   const clearRegisterForm = () => {
-    setLogin("")
-    setEmail("")
-    setPassword("")
-  }
+    setLogin("");
+    setEmail("");
+    setPassword("");
+  };
 
   return (
     <TouchableWithoutFeedback onPress={keyBoardHide}>
       <View style={styles.mainContainer}>
-      <ImageBackground style={styles.backgroundImg} source={bckImage}>
-        <StatusBar style="auto" />
-        <KeyboardAvoidingView
-          behavior={"padding"}
-          style={styles.registerBox}
-          keyboardVerticalOffset={32}
-        >
-          <View style={styles.registerImg}>
-            {/* <Image
+        <ImageBackground style={styles.backgroundImg} source={bckImage}>
+          <StatusBar style="auto" />
+          <KeyboardAvoidingView
+            behavior={"padding"}
+            style={styles.registerBox}
+            keyboardVerticalOffset={32}
+          >
+            <View style={styles.registerImg}>
+              {/* <Image
             // style={styles.registerImg}
             source={require("../assets/avatar.png")}
           />
           <TouchableOpacity activeOpacity={0.8} style={styles.registerImgButton}>
             <AntDesign name="closecircleo" size={25} color="#E8E8E8" />
           </TouchableOpacity> */}
-            {/* ///////////////////////without photo//////////////////// */}
-            <TouchableOpacity
-              activeOpacity={0.8}
-              style={styles.registerImgButton}
-            >
-              <AntDesign name="pluscircleo" size={25} color="#FF6C00" />
-            </TouchableOpacity>
-          </View>
-          <Text style={styles.registerTittle}>Реєстрація</Text>
-          <View>
-            <TextInput
-              style={
-                [styles.registerFormInput, styles.registerLoginInput, 
-                  isFocused.login && { borderColor: "#FF6C00", backgroundColor: "#FFFFFF"}]
-              }
-              selectionColor={"#FF6C00"}
-              enterKeyHint={'next'}
-              placeholder="Логін"
-              keyboardType="default"
-              onFocus={() => {
-                handleInputFocus("login");
-              }}
-              onSubmitEditing={keyBoardHide}
-              value={login}
-              onChangeText={setLogin}
-            />
-            <TextInput
-              style={
-                [styles.registerFormInput, styles.registerEmailInput, 
-                  isFocused.email && { borderColor: "#FF6C00", backgroundColor: "#FFFFFF"}]
-              }
-              selectionColor={"#FF6C00"}
-              enterKeyHint={'next'}
-              placeholder="Адреса електронної пошти"
-              keyboardType="email-address"
-              onFocus={() => {
-                handleInputFocus("email");
-              }}
-              onSubmitEditing={keyBoardHide}
-              value={email}
-              onChangeText={setEmail}
-            />
-            <View style={styles.passwordInputBox}>
+              {/* ///////////////////////without photo//////////////////// */}
+              <TouchableOpacity
+                activeOpacity={0.8}
+                style={styles.registerImgButton}
+              >
+                <AntDesign name="pluscircleo" size={25} color="#FF6C00" />
+              </TouchableOpacity>
+            </View>
+            <Text style={styles.registerTittle}>Реєстрація</Text>
+            <View>
               <TextInput
-                style={
-                  isFocused.password
-                    ? [
-                        styles.registerFormInput,
-                        {
-                          borderColor: "#FF6C00",
-                          backgroundColor: "#FFFFFF",
-                        },
-                      ]
-                    : [styles.registerFormInput]
-                }
+                style={[
+                  styles.registerFormInput,
+                  styles.registerLoginInput,
+                  isFocused.login && {
+                    borderColor: "#FF6C00",
+                    backgroundColor: "#FFFFFF",
+                  },
+                ]}
                 selectionColor={"#FF6C00"}
-                enterKeyHint={'next'}
-                placeholder="Пароль"
+                enterKeyHint={"next"}
+                placeholder="Логін"
                 keyboardType="default"
-                secureTextEntry={isShowPassword}
                 onFocus={() => {
-                  handleInputFocus("password");
+                  handleInputFocus("login");
                 }}
                 onSubmitEditing={keyBoardHide}
-                value={password}
-                onChangeText={setPassword}
+                value={login}
+                onChangeText={setLogin}
               />
-              <TouchableOpacity
-                style={styles.registerInputButton}
-                activeOpacity={0.8}
-                onPress={() => setShowPassword(!isShowPassword)}
-              >
-                <Text style={styles.registerInputText}>Показати</Text>
-              </TouchableOpacity>
+              <TextInput
+                style={[
+                  styles.registerFormInput,
+                  styles.registerEmailInput,
+                  isFocused.email && {
+                    borderColor: "#FF6C00",
+                    backgroundColor: "#FFFFFF",
+                  },
+                ]}
+                selectionColor={"#FF6C00"}
+                enterKeyHint={"next"}
+                placeholder="Адреса електронної пошти"
+                keyboardType="email-address"
+                onFocus={() => {
+                  handleInputFocus("email");
+                }}
+                onSubmitEditing={keyBoardHide}
+                value={email}
+                onChangeText={setEmail}
+              />
+              <View style={styles.passwordInputBox}>
+                <TextInput
+                  style={
+                    isFocused.password
+                      ? [
+                          styles.registerFormInput,
+                          {
+                            borderColor: "#FF6C00",
+                            backgroundColor: "#FFFFFF",
+                          },
+                        ]
+                      : [styles.registerFormInput]
+                  }
+                  selectionColor={"#FF6C00"}
+                  enterKeyHint={"next"}
+                  placeholder="Пароль"
+                  keyboardType="default"
+                  secureTextEntry={isShowPassword}
+                  onFocus={() => {
+                    handleInputFocus("password");
+                  }}
+                  onSubmitEditing={keyBoardHide}
+                  value={password}
+                  onChangeText={setPassword}
+                />
+                <TouchableOpacity
+                  style={styles.registerInputButton}
+                  activeOpacity={0.8}
+                  onPress={() => setShowPassword(!isShowPassword)}
+                >
+                  <Text style={styles.registerInputText}>Показати</Text>
+                </TouchableOpacity>
+              </View>
             </View>
+          </KeyboardAvoidingView>
+          <View
+            style={{
+              paddingTop: 43,
+              paddingBottom: 0,
+              backgroundColor: "#FFFFFF",
+              paddingHorizontal: 16,
+            }}
+          >
+            <TouchableOpacity
+              style={styles.registerBoxButton}
+              activeOpacity={0.8}
+              onPress={handleSubmit}
+            >
+              <Text style={styles.registerButtonText}>Зареєстуватися</Text>
+            </TouchableOpacity>
+            <Text style={styles.registerLink}>
+              Вже є акаунт?{" "}
+              <Text
+                style={
+                  styles.registerLink
+                }
+                onPress={() => navigation.navigate("Login")}
+              >
+                Увійти
+              </Text>
+            </Text>
           </View>
-        </KeyboardAvoidingView>
-        <View style={{ paddingTop: 43, paddingBottom: 0, backgroundColor: "#FFFFFF", paddingHorizontal: 16,}}>
-              <TouchableOpacity
-                style={styles.registerBoxButton}
-                activeOpacity={0.8}
-                onPress={handleSubmit}
-              >
-                <Text style={styles.registerButtonText}>Зареєстуватися</Text>
-              </TouchableOpacity>
-              <Text style={styles.registerLink} onPress={()=>navigation.navigate("Login")}>Вже є акаунт? Увійти</Text>
-            </View>
-      </ImageBackground>
+        </ImageBackground>
       </View>
     </TouchableWithoutFeedback>
   );
