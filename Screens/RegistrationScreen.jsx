@@ -16,6 +16,7 @@ import {
 } from "react-native";
 import { AntDesign } from "@expo/vector-icons";
 import bckImage from "../assets/photo-bg.png";
+import { useNavigation } from '@react-navigation/native';
 
 export default function RegistrationScreen() {
   const [login, setLogin] = useState("");
@@ -26,7 +27,9 @@ export default function RegistrationScreen() {
     email: false,
     password: false,
   });
-  const [isShowPassword, setShowPassword] = useState(true)
+  const [isShowPassword, setShowPassword] = useState(true);
+  const navigation = useNavigation();
+
 
   const keyBoardHide = () => {
     setIsFocused({
@@ -169,7 +172,7 @@ export default function RegistrationScreen() {
               >
                 <Text style={styles.registerButtonText}>Зареєстуватися</Text>
               </TouchableOpacity>
-              <Text style={styles.registerLink}>Вже є акаунт? Увійти</Text>
+              <Text style={styles.registerLink} onPress={()=>navigation.navigate("Login")}>Вже є акаунт? Увійти</Text>
             </View>
       </ImageBackground>
       </View>

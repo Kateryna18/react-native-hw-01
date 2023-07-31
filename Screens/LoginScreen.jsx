@@ -14,6 +14,7 @@ import {
   Alert,
 } from "react-native";
 import bckImage from "../assets/photo-bg.png";
+import { useNavigation } from '@react-navigation/native';
 
 export default function LoginScreen() {
   const [email, setEmail] = useState("");
@@ -22,7 +23,8 @@ export default function LoginScreen() {
     email: false,
     password: false,
   });
-  const [isShowPassword, setShowPassword] = useState(true)
+  const [isShowPassword, setShowPassword] = useState(true);
+  const navigation = useNavigation();
 
 
   const keyBoardHide = () => {
@@ -138,7 +140,7 @@ export default function LoginScreen() {
             >
               <Text style={styles.loginButtonText}>Увійти</Text>
             </TouchableOpacity>
-            <Text style={styles.loginLink}>Немає акаунту? Зареєструватися</Text>
+            <Text style={styles.loginLink} onPress={()=>navigation.navigate("Registration")}>Немає акаунту? Зареєструватися</Text>
           </View>
         </ImageBackground>
       </View>
