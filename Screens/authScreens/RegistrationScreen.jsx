@@ -299,11 +299,14 @@ const styles = StyleSheet.create({
     color: "#FFFFFF",
   },
   registerLink: {
-    paddingBottom: 78,
     textAlign: "center",
     fontFamily: "roboto-r",
     fontSize: 16,
     fontWeight: 400,
     color: "#1B4371",
+    ...Platform.select({
+      ios: {paddingBottom: 78,},
+      android: {paddingBottom: 45,},
+    })
   },
 });

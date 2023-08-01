@@ -1,5 +1,4 @@
 import React from "react";
-import { StatusBar } from "expo-status-bar";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { Feather } from "@expo/vector-icons";
 import PostsScreen from "../Screens/nestedScreens/PostsScreen";
@@ -32,6 +31,7 @@ export default function HomeScreen() {
           component={PostsScreen}
           options={{
             title: "Публікації",
+            headerTitleAlign: "center",
             tabBarIcon: (focused, size, color) => (
               <Feather name="grid" size={24} color={color} />
             ),
@@ -69,29 +69,3 @@ export default function HomeScreen() {
     </>
   );
 }
-
-// import { createStackNavigator } from "@react-navigation/stack";
-// import PostsScreen from "../Screens/nestedScreens/PostsScreen";
-// import CommentsScreen from "../Screens/nestedScreens/CommentsScreen"
-// import MapScreen from "../Screens/nestedScreens/MapScreen"
-
-// import {
-//   Text,
-//   TouchableWithoutFeedback,
-//   View,
-//   Image,
-//   TouchableOpacity,
-//   KeyboardAvoidingView,
-// } from "react-native";
-
-// const NestedScreen = createStackNavigator()
-
-// export default function Home() {
-//   return (
-//     <NestedScreen.Navigator initialRouteName="PostsScreen">
-//       <NestedScreen.Screen name='PostsScreen' component={PostsScreen} />
-//       <NestedScreen.Screen name='CommentsScreen' component={CommentsScreen} />
-//       <NestedScreen.Screen name='MapScreen' component={MapScreen} />
-//     </NestedScreen.Navigator>
-//   )
-// }

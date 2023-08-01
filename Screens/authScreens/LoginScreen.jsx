@@ -227,11 +227,14 @@ const styles = StyleSheet.create({
     color: "#FFFFFF",
   },
   loginLink: {
-    paddingBottom: 144,
     textAlign: "center",
     fontFamily: "roboto-r",
     fontSize: 16,
     fontWeight: 400,
     color: "#1B4371",
+    ...Platform.select({
+      ios: {paddingBottom: 144,},
+      android: {paddingBottom: 111,},
+    })
   },
 });
