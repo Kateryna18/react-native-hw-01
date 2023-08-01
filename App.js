@@ -10,7 +10,6 @@ import RobotoBold from "./assets/fonts/Roboto-Bold.ttf";
 import RegistrationScreen from "./Screens/authScreens/RegistrationScreen";
 import LoginScreen from "./Screens/authScreens/LoginScreen";
 import HomeScreen from "./Screens/HomeScreen";
-// import {useRoute} from "./router";
 
 
 const fonts = async () => {
@@ -25,7 +24,6 @@ const authNav = createStackNavigator();
 
 export default function App() {
   const [isReadyfont, setIsReadyfont] = useState(false);
-  // const routing = useRoute(null)
 
   if (!isReadyfont) {
     return (
@@ -38,21 +36,18 @@ export default function App() {
   }
 
   return <NavigationContainer>
-    <authNav.Navigator initialRouteName="Login">
+    <authNav.Navigator initialRouteName="Login" screenOptions={{ headerShown: false }}>
         <authNav.Screen
           name="Registration"
           component={RegistrationScreen}
-          options={{ headerShown: false }}
         />
         <authNav.Screen
           name="Login"
           component={LoginScreen}
-          options={{ headerShown: false }}
         />
         <authNav.Screen
           name="Home"
           component={HomeScreen}
-          options={{ headerShown: false }}
         />
       </authNav.Navigator>
   </NavigationContainer>;

@@ -59,6 +59,7 @@ export default function RegistrationScreen() {
 
 
     console.log(registerData);
+    navigation.navigate("Home")
     clearRegisterForm();
   };
 
