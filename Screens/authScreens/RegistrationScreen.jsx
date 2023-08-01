@@ -3,23 +3,27 @@ import { StatusBar } from "expo-status-bar";
 import {
   Platform,
   StyleSheet,
-  View,
+  ImageBackground,
   KeyboardAvoidingView,
+  View,
   TextInput,
   TouchableOpacity,
   Text,
+  Image,
   TouchableWithoutFeedback,
   Keyboard,
-  ImageBackground,
   Alert,
 } from "react-native";
-import bckImage from "../assets/photo-bg.png";
+import { AntDesign } from "@expo/vector-icons";
+import bckImage from "../../assets/photo-bg.png";
 import { useNavigation } from "@react-navigation/native";
 
-export default function LoginScreen() {
+export default function RegistrationScreen() {
+  const [login, setLogin] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [isFocused, setIsFocused] = useState({
+    login: false,
     email: false,
     password: false,
   });
@@ -28,6 +32,7 @@ export default function LoginScreen() {
 
   const keyBoardHide = () => {
     setIsFocused({
+      login: false,
       email: false,
       password: false,
     });
@@ -42,20 +47,23 @@ export default function LoginScreen() {
 
   const handleSubmit = () => {
     const registerData = {
+      login,
       email,
       password,
     };
 
-    if (!email || !password) {
+    if (!email || !password || !login) {
       Alert.alert("Error", "Всі поля мають бути обов'язково заповнені");
       return;
     }
+
 
     console.log(registerData);
     clearRegisterForm();
   };
 
   const clearRegisterForm = () => {
+    setLogin("");
     setEmail("");
     setPassword("");
   };
@@ -67,15 +75,51 @@ export default function LoginScreen() {
           <StatusBar style="auto" />
           <KeyboardAvoidingView
             behavior={"padding"}
-            style={styles.loginBox}
+            style={styles.registerBox}
             keyboardVerticalOffset={32}
           >
-            <Text style={styles.loginTittle}>Увійти</Text>
+            <View style={styles.registerImg}>
+              {/* <Image
+            // style={styles.registerImg}
+            source={require("../assets/avatar.png")}
+          />
+          <TouchableOpacity activeOpacity={0.8} style={styles.registerImgButton}>
+            <AntDesign name="closecircleo" size={25} color="#E8E8E8" />
+          </TouchableOpacity> */}
+              {/* ///////////////////////without photo//////////////////// */}
+              <TouchableOpacity
+                activeOpacity={0.8}
+                style={styles.registerImgButton}
+              >
+                <AntDesign name="pluscircleo" size={25} color="#FF6C00" />
+              </TouchableOpacity>
+            </View>
+            <Text style={styles.registerTittle}>Реєстрація</Text>
             <View>
               <TextInput
                 style={[
-                  styles.loginFormInput,
-                  styles.loginEmailInput,
+                  styles.registerFormInput,
+                  styles.registerLoginInput,
+                  isFocused.login && {
+                    borderColor: "#FF6C00",
+                    backgroundColor: "#FFFFFF",
+                  },
+                ]}
+                selectionColor={"#FF6C00"}
+                enterKeyHint={"next"}
+                placeholder="Логін"
+                keyboardType="default"
+                onFocus={() => {
+                  handleInputFocus("login");
+                }}
+                onSubmitEditing={keyBoardHide}
+                value={login}
+                onChangeText={setLogin}
+              />
+              <TextInput
+                style={[
+                  styles.registerFormInput,
+                  styles.registerEmailInput,
                   isFocused.email && {
                     borderColor: "#FF6C00",
                     backgroundColor: "#FFFFFF",
@@ -94,13 +138,17 @@ export default function LoginScreen() {
               />
               <View style={styles.passwordInputBox}>
                 <TextInput
-                  style={[
-                    styles.loginFormInput,
-                    isFocused.password && {
-                      borderColor: "#FF6C00",
-                      backgroundColor: "#FFFFFF",
-                    },
-                  ]}
+                  style={
+                    isFocused.password
+                      ? [
+                          styles.registerFormInput,
+                          {
+                            borderColor: "#FF6C00",
+                            backgroundColor: "#FFFFFF",
+                          },
+                        ]
+                      : [styles.registerFormInput]
+                  }
                   selectionColor={"#FF6C00"}
                   enterKeyHint={"next"}
                   placeholder="Пароль"
@@ -114,11 +162,11 @@ export default function LoginScreen() {
                   onChangeText={setPassword}
                 />
                 <TouchableOpacity
-                  style={styles.loginInputButton}
+                  style={styles.registerInputButton}
                   activeOpacity={0.8}
                   onPress={() => setShowPassword(!isShowPassword)}
                 >
-                  <Text style={styles.loginInputText}>Показати</Text>
+                  <Text style={styles.registerInputText}>Показати</Text>
                 </TouchableOpacity>
               </View>
             </View>
@@ -132,19 +180,21 @@ export default function LoginScreen() {
             }}
           >
             <TouchableOpacity
-              style={styles.loginBoxButton}
+              style={styles.registerBoxButton}
               activeOpacity={0.8}
               onPress={handleSubmit}
             >
-              <Text style={styles.loginButtonText}>Увійти</Text>
+              <Text style={styles.registerButtonText}>Зареєстуватися</Text>
             </TouchableOpacity>
-            <Text style={styles.loginLink}>
-              Немає акаунту?{" "}
+            <Text style={styles.registerLink}>
+              Вже є акаунт?{" "}
               <Text
-                style={[styles.loginLink, {textDecorationLine: 'underline',}]}
-                onPress={() => navigation.navigate("Registration")}
+                style={
+                  styles.registerLink
+                }
+                onPress={() => navigation.navigate("Login")}
               >
-                Зареєструватися
+                Увійти
               </Text>
             </Text>
           </View>
@@ -164,17 +214,36 @@ const styles = StyleSheet.create({
     resizeMode: "cover",
     backgroundColor: "#E8E8E8",
   },
-  loginBox: {
-    paddingTop: 32,
+  registerBox: {
+    paddingTop: 92,
     paddingHorizontal: 16,
     backgroundColor: "#FFFFFF",
     borderTopLeftRadius: 25,
     borderTopRightRadius: 25,
   },
-  loginTittle: {
+  registerImg: {
+    position: "absolute",
+    top: -60,
+    alignSelf: "center",
+    width: 120,
+    height: 120,
+    backgroundColor: "#F6F6F6",
+    borderRadius: 16,
+  },
+  registerImgButton: {
+    position: "absolute",
+    top: 81,
+    left: 103,
+    backgroundColor: "#FFFFFF",
+    borderRadius: 20,
+  },
+  registerButtonIcon: {
+    backgroundColor: "white",
+  },
+  registerTittle: {
     marginBottom: 32,
-    textAlign: "center",
     fontSize: 30,
+    textAlign: "center",
     ...Platform.select({
       ios: {
         fontFamily: "roboto-m",
@@ -186,7 +255,7 @@ const styles = StyleSheet.create({
       },
     }),
   },
-  loginFormInput: {
+  registerFormInput: {
     height: 50,
     padding: 16,
     fontFamily: "roboto-r",
@@ -197,36 +266,39 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     borderWidth: 1,
   },
-  loginEmailInput: {
+  registerLoginInput: {
     marginBottom: 16,
   },
-  loginInputButton: {
+  registerEmailInput: {
+    marginBottom: 16,
+  },
+  registerInputButton: {
     position: "absolute",
     top: 15,
     right: 15,
   },
-  loginInputText: {
+  registerInputText: {
     fontFamily: "roboto-r",
     fontSize: 16,
     fontWeight: 400,
     color: "#1B4371",
   },
-  loginBoxButton: {
+  registerBoxButton: {
     paddingBottom: 16,
     paddingTop: 16,
     marginBottom: 16,
     backgroundColor: "#FF6C00",
     borderRadius: 100,
   },
-  loginButtonText: {
+  registerButtonText: {
     textAlign: "center",
     fontFamily: "roboto-r",
     fontSize: 16,
     fontWeight: 400,
     color: "#FFFFFF",
   },
-  loginLink: {
-    paddingBottom: 144,
+  registerLink: {
+    paddingBottom: 78,
     textAlign: "center",
     fontFamily: "roboto-r",
     fontSize: 16,

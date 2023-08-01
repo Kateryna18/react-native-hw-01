@@ -22,7 +22,7 @@ export default function PostsScreen() {
         >
           <View style={styles.headerBox}>
             <View style={styles.avatarBox}>
-              <Image source={require("../assets/avatar.png")} style={styles.avatarImg}/>
+              <Image source={require("../../assets/avatar.png")} style={styles.avatarImg}/>
             </View>
             <View style={styles.userBox}>
                 <Text style={styles.nameUser}>Natali Romanova</Text>

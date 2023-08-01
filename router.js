@@ -3,11 +3,12 @@ import { createStackNavigator } from "@react-navigation/stack";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { Feather } from "@expo/vector-icons";
 
-import RegistrationScreen from "./Screens/RegistrationScreen";
-import LoginScreen from "./Screens/LoginScreen";
-import PostsScreen from "./Screens/PostsScreen";
+import RegistrationScreen from "./Screens/authScreens/RegistrationScreen";
+import LoginScreen from "./Screens/authScreens/LoginScreen";
+import PostsScreen from "./Screens/nestedScreens/PostsScreen";
 import CreatePostsScreen from "./Screens/CreatePostsScreen";
 import ProfileScreen from "./Screens/ProfileScreen";
+import HomeScreen from "./Screens/HomeScreen"
 
 const authNav = createStackNavigator();
 const tabNav = createBottomTabNavigator();
@@ -27,9 +28,9 @@ export const useRoute = (isAuth) => {
           options={{ headerShown: false }}
         />
         <authNav.Screen
-          name="PostsScreen"
-          component={PostsScreen}
-          options={{ title: "Публікації" }}
+          name="Home"
+          component={HomeScreen}
+          // options={{ headerShown: false }}
         />
       </authNav.Navigator>
     );
@@ -84,7 +85,7 @@ export const useRoute = (isAuth) => {
         name="Profile"
         component={ProfileScreen}
         options={{
-          // headerShown: false,
+          headerShown: false,
           tabBarIcon: (focused, size, color) => (
             <Feather name="user" size={24} color={color} />
           ),
