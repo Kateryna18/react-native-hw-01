@@ -16,10 +16,12 @@ export default function HomeScreen() {
           tabBarShowLabel: false,
           tabBarActiveBackgroundColor: "#FF6C00",
           tabBarStyle: {
+            height: 83,
             paddingHorizontal: 81,
+            paddingVertical: 9,
+            paddingBottom: 34,
           },
           tabBarItemStyle: {
-            marginTop: 9,
             borderRadius: 20,
           },
           tabBarActiveTintColor: "#ffffff",
@@ -32,8 +34,8 @@ export default function HomeScreen() {
           options={{
             title: "Публікації",
             headerTitleAlign: "center",
-            tabBarIcon: (focused, size, color) => (
-              <Feather name="grid" size={24} color={color} />
+            tabBarIcon: ({focused, size, color: tintColor}) => (
+              <Feather name="grid" size={24} color={tintColor} />
             ),
             headerRight: () => (
               <Feather name="log-out" size={24} color="#BDBDBD" />
@@ -46,8 +48,8 @@ export default function HomeScreen() {
           component={CreatePostsScreen}
           options={{
             title: "Створити публікацію",
-            tabBarIcon: (focused, size, color) => (
-              <Feather name="plus" size={24} color={color} />
+            tabBarIcon: ({focused, size, color: tintColor}) => (
+              <Feather name="plus" size={24} color={tintColor} />
             ),
             headerLeft: () => (
               <Feather name="arrow-left" size={24} color="#212121" />
@@ -60,8 +62,8 @@ export default function HomeScreen() {
           component={ProfileScreen}
           options={{
             headerShown: false,
-            tabBarIcon: (focused, size, color) => (
-              <Feather name="user" size={24} color={color} />
+            tabBarIcon: ({focused, size, color: tintColor}) => (
+              <Feather name="user" size={24} color={tintColor} />
             ),
           }}
         />

@@ -113,7 +113,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     backgroundColor: "#FFFFFF",
-    borderRadius: "50%",
+    borderRadius: 50,
   },
   addPhotoIcon: {
     color: "#BDBDBD",
