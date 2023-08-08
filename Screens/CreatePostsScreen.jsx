@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { StatusBar } from "expo-status-bar";
 import { FontAwesome, Feather } from "@expo/vector-icons";
 import {
@@ -10,9 +10,59 @@ import {
   TouchableOpacity,
   KeyboardAvoidingView,
   StyleSheet,
+  Button,
 } from "react-native";
+import { Camera, CameraType } from "expo-camera";
+import * as MediaLibrary from "expo-media-library";
 
 export default function CreatePostsScreen() {
+  // const [hasPermission, setHasPermission] = useState(null);
+  const [cameraRef, setCameraRef] = useState(null);
+  // const [type, setType] = useState(Camera.Constants.Type.back);
+  const [permission, requestPermission] = Camera.useCameraPermissions();
+  const [permissionResponse, requestPermissionMediaLibrary] =
+    MediaLibrary.usePermissions();
+  const [photo, setPhoto] = useState(null);
+  // const [type, setType] = useState(CameraType.back);
+
+  console.log(photo);
+
+  if (!permission) {
+    return <Text>LOADING...</Text>;
+  }
+
+  if (!permission.granted) {
+    return (
+      <View style={styles.mainContainer}>
+        <Text style={{ textAlign: "center" }}>
+          We need your permission to show the camera
+        </Text>
+        <Button onPress={requestPermission} title="grant permission" />
+      </View>
+    );
+  }
+
+  // useEffect(() => {
+  //   (async () => {
+  //     const { status } = await Camera.useCameraPermissions();
+  //     await MediaLibrary.requestPermissionsAsync();
+
+  //     setHasPermission(status === "granted");
+  //   })();
+  // }, []);
+
+  const takePhoto = async () => {
+    const { uri } = await cameraRef.takePictureAsync();
+    // console.log(uri);
+    setPhoto(uri);
+    const asset = await MediaLibrary.createAssetAsync(uri);
+    // console.log(asset)
+  };
+
+  const deletePhoto = () => {
+    setPhoto(null);
+  };
+
   return (
     <TouchableWithoutFeedback>
       <View style={styles.mainContainer}>
@@ -24,11 +74,16 @@ export default function CreatePostsScreen() {
         >
           <View style={styles.createFormBox}>
             <View style={styles.photoBox}>
-              <View style={styles.photoBoxField}>
-                <Image style={styles.photoImg} />
+              <Camera style={styles.camera} ref={setCameraRef}>
+                {photo && (
+                  <View style={styles.photoImg}>
+                    <Image style={styles.photoImg} source={{ uri: photo }} />
+                  </View>
+                )}
                 <TouchableOpacity
                   activeOpacity={0.8}
                   style={styles.addPhotoBoxButton}
+                  onPress={takePhoto}
                 >
                   <FontAwesome
                     name="camera"
@@ -37,10 +92,16 @@ export default function CreatePostsScreen() {
                     color="black"
                   />
                 </TouchableOpacity>
-              </View>
-              <TouchableOpacity style={styles.photoBoxButton}>
-                <Text style={styles.photoBoxButtonText}>Завантажте фото</Text>
-              </TouchableOpacity>
+              </Camera>
+              {photo ? (
+                <TouchableOpacity style={styles.photoBoxButton} onPress={deletePhoto}>
+                  <Text style={styles.photoBoxButtonText}>Редагувати фото</Text>
+                </TouchableOpacity>
+              ) : (
+                <TouchableOpacity style={styles.photoBoxButton}>
+                  <Text style={styles.photoBoxButtonText}>Завантажте фото</Text>
+                </TouchableOpacity>
+              )}
             </View>
             <View style={styles.createFormLabel}>
               <TextInput
@@ -49,14 +110,16 @@ export default function CreatePostsScreen() {
               ></TextInput>
             </View>
             <View style={styles.createFormLabel}>
-              <TouchableOpacity
-                activeOpacity={0.8}
-                style={styles.mapButton}
-              >
-                <Feather style={styles.mapButtonIcon} name="map-pin" size={24} color="#BDBDBD" />
+              <TouchableOpacity activeOpacity={0.8} style={styles.mapButton}>
+                <Feather
+                  style={styles.mapButtonIcon}
+                  name="map-pin"
+                  size={24}
+                  color="#BDBDBD"
+                />
               </TouchableOpacity>
               <TextInput
-                style={[styles.createFormInput, {paddingLeft: 28,}]}
+                style={[styles.createFormInput, { paddingLeft: 28 }]}
                 placeholder="Місцевість..."
               ></TextInput>
             </View>
@@ -65,9 +128,14 @@ export default function CreatePostsScreen() {
             </TouchableOpacity>
           </View>
           <View style={styles.buttonDeleteBox}>
-          <TouchableOpacity style={styles.buttonDelete}>
-          <FontAwesome style={styles.buttonDeleteIcon} name="trash-o" size={24} color="#BDBDBD" />
-          </TouchableOpacity>
+            <TouchableOpacity style={styles.buttonDelete}>
+              <FontAwesome
+                style={styles.buttonDeleteIcon}
+                name="trash-o"
+                size={24}
+                color="#BDBDBD"
+              />
+            </TouchableOpacity>
           </View>
         </KeyboardAvoidingView>
       </View>
@@ -90,7 +158,7 @@ const styles = StyleSheet.create({
   photoBox: {
     marginBottom: 32,
   },
-  photoBoxField: {
+  camera: {
     position: "relative",
     width: "100%",
     height: 240,
@@ -102,7 +170,10 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: "#E8E8E8",
   },
-  photoImg: {},
+  photoImg: {
+    width: "100%",
+    height: "100%",
+  },
   addPhotoBoxButton: {
     position: "absolute",
     top: "50%",

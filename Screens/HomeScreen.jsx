@@ -44,7 +44,7 @@ export default function HomeScreen() {
               <Feather name="grid" size={24} color={tintColor} />
             ),
             headerRight: () => (
-              <TouchableOpacity>
+              <TouchableOpacity onPress={() => navigation.navigate("Login")}>
                 <Feather name="log-out" size={24} color="#BDBDBD" />
               </TouchableOpacity>
             ),
