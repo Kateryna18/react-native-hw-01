@@ -32,6 +32,7 @@ export default function LoginScreen() {
       password: false,
     });
     Keyboard.dismiss();
+    
   };
 
   const handleInputFocus = (textInput) => {
