@@ -9,7 +9,7 @@ import RobotoMedium from "./assets/fonts/Roboto-Medium.ttf";
 import RobotoBold from "./assets/fonts/Roboto-Bold.ttf";
 import RegistrationScreen from "./Screens/authScreens/RegistrationScreen";
 import LoginScreen from "./Screens/authScreens/LoginScreen";
-import HomeScreen from "./Screens/HomeScreen";
+import HomeScreen from "./Screens/authScreens/HomeScreen";
 
 
 const fonts = async () => {

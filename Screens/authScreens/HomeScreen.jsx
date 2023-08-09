@@ -1,12 +1,10 @@
 import React from "react";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { Feather } from "@expo/vector-icons";
-import {
-  TouchableOpacity,
-} from "react-native";
-import PostsScreen from "../Screens/nestedScreens/PostsScreen";
-import CreatePostsScreen from "../Screens/CreatePostsScreen";
-import ProfileScreen from "../Screens/ProfileScreen";
+import { TouchableOpacity } from "react-native";
+import PostsScreen from "../PostsScreen";
+import CreatePostsScreen from "../CreatePostsScreen";
+import ProfileScreen from "../ProfileScreen";
 import { useNavigation } from "@react-navigation/native";
 
 const tabNav = createBottomTabNavigator();
@@ -17,7 +15,6 @@ export default function HomeScreen() {
   return (
     <>
       <tabNav.Navigator
-        initialRouteName="Posts"
         screenOptions={{
           tabBarShowLabel: false,
           tabBarActiveBackgroundColor: "#FF6C00",
@@ -40,7 +37,7 @@ export default function HomeScreen() {
           options={{
             title: "Публікації",
             headerTitleAlign: "center",
-            tabBarIcon: ({focused, size, color: tintColor}) => (
+            tabBarIcon: ({ focused, size, color: tintColor }) => (
               <Feather name="grid" size={24} color={tintColor} />
             ),
             headerRight: () => (
@@ -56,17 +53,15 @@ export default function HomeScreen() {
           component={CreatePostsScreen}
           options={{
             title: "Створити публікацію",
-            tabBarIcon: ({focused, size, color: tintColor}) => (
+            tabBarIcon: ({ focused, size, color: tintColor }) => (
               <Feather name="plus" size={24} color={tintColor} />
             ),
             headerLeft: () => (
-              <TouchableOpacity 
-              onPress={() => navigation.navigate("Posts")}
-              >
-                <Feather name="arrow-left" size={24} color="#212121"/>
+              <TouchableOpacity onPress={() => navigation.navigate("Posts")}>
+                <Feather name="arrow-left" size={24} color="#212121" />
               </TouchableOpacity>
             ),
-            headerLeftContainerStyle: { paddingLeft: 16, }
+            headerLeftContainerStyle: { paddingLeft: 16 },
           }}
         />
         <tabNav.Screen
@@ -74,7 +69,7 @@ export default function HomeScreen() {
           component={ProfileScreen}
           options={{
             headerShown: false,
-            tabBarIcon: ({focused, size, color: tintColor}) => (
+            tabBarIcon: ({ focused, size, color: tintColor }) => (
               <Feather name="user" size={24} color={tintColor} />
             ),
           }}

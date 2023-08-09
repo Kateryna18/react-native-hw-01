@@ -16,6 +16,7 @@ import { Camera } from "expo-camera";
 import * as MediaLibrary from "expo-media-library";
 import { useNavigation } from "@react-navigation/native";
 
+
 export default function CreatePostsScreen() {
   const [cameraRef, setCameraRef] = useState(null);
   const [permission, requestPermission] = Camera.useCameraPermissions();
@@ -56,7 +57,7 @@ export default function CreatePostsScreen() {
   };
 
   const handleSubmit = () => {
-    navigation.navigate("Posts", { photo, title, location });
+    navigation.navigate("Posts", {screen: "DefaultScreen", params: {photo, title, location} });
 
     setTitle("");
     setLocation("");
