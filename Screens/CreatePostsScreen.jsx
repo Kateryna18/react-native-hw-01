@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState } from "react";
 import { StatusBar } from "expo-status-bar";
 import { FontAwesome, Feather } from "@expo/vector-icons";
 import {
@@ -12,20 +12,21 @@ import {
   StyleSheet,
   Button,
 } from "react-native";
-import { Camera, CameraType } from "expo-camera";
+import { Camera } from "expo-camera";
 import * as MediaLibrary from "expo-media-library";
+import { useNavigation } from "@react-navigation/native";
 
 export default function CreatePostsScreen() {
-  // const [hasPermission, setHasPermission] = useState(null);
   const [cameraRef, setCameraRef] = useState(null);
-  // const [type, setType] = useState(Camera.Constants.Type.back);
   const [permission, requestPermission] = Camera.useCameraPermissions();
   const [permissionResponse, requestPermissionMediaLibrary] =
     MediaLibrary.usePermissions();
   const [photo, setPhoto] = useState(null);
-  // const [type, setType] = useState(CameraType.back);
+  const [title, setTitle] = useState("");
+  const [location, setLocation] = useState("");
+  const navigation = useNavigation();
 
-  console.log(photo);
+  // console.log(photo);
 
   if (!permission) {
     return <Text>LOADING...</Text>;
@@ -42,15 +43,6 @@ export default function CreatePostsScreen() {
     );
   }
 
-  // useEffect(() => {
-  //   (async () => {
-  //     const { status } = await Camera.useCameraPermissions();
-  //     await MediaLibrary.requestPermissionsAsync();
-
-  //     setHasPermission(status === "granted");
-  //   })();
-  // }, []);
-
   const takePhoto = async () => {
     const { uri } = await cameraRef.takePictureAsync();
     // console.log(uri);
@@ -60,6 +52,14 @@ export default function CreatePostsScreen() {
   };
 
   const deletePhoto = () => {
+    setPhoto(null);
+  };
+
+  const handleSubmit = () => {
+    navigation.navigate("Posts", { photo, title, location });
+
+    setTitle("");
+    setLocation("");
     setPhoto(null);
   };
 
@@ -82,8 +82,13 @@ export default function CreatePostsScreen() {
                 )}
                 <TouchableOpacity
                   activeOpacity={0.8}
-                  style={styles.addPhotoBoxButton}
-                  onPress={takePhoto}
+                  style={[
+                    styles.addPhotoBoxButton,
+                    photo
+                      ? { backgroundColor: "rgba(255, 255, 255, 0.3)" }
+                      : { backgroundColor: "#FFFFFF" },
+                  ]}
+                  onPress={photo ? null : takePhoto}
                 >
                   <FontAwesome
                     name="camera"
@@ -94,7 +99,10 @@ export default function CreatePostsScreen() {
                 </TouchableOpacity>
               </Camera>
               {photo ? (
-                <TouchableOpacity style={styles.photoBoxButton} onPress={deletePhoto}>
+                <TouchableOpacity
+                  style={styles.photoBoxButton}
+                  onPress={deletePhoto}
+                >
                   <Text style={styles.photoBoxButtonText}>Редагувати фото</Text>
                 </TouchableOpacity>
               ) : (
@@ -107,6 +115,9 @@ export default function CreatePostsScreen() {
               <TextInput
                 style={styles.createFormInput}
                 placeholder="Назва..."
+                enterKeyHint={"next"}
+                value={title}
+                onChangeText={setTitle}
               ></TextInput>
             </View>
             <View style={styles.createFormLabel}>
@@ -121,10 +132,30 @@ export default function CreatePostsScreen() {
               <TextInput
                 style={[styles.createFormInput, { paddingLeft: 28 }]}
                 placeholder="Місцевість..."
+                enterKeyHint={"next"}
+                value={location}
+                onChangeText={setLocation}
               ></TextInput>
             </View>
-            <TouchableOpacity style={styles.createFormButton}>
-              <Text style={styles.createFormButtonText}>Опубліковати</Text>
+            <TouchableOpacity
+              style={[
+                styles.createFormButton,
+                photo || title || location
+                  ? { backgroundColor: "#FF6C00" }
+                  : { backgroundColor: "#F6F6F6" },
+              ]}
+              onPress={photo || title || location ? handleSubmit : null}
+            >
+              <Text
+                style={[
+                  styles.createFormButtonText,
+                  photo || title || location
+                    ? { color: "#FFFFFF" }
+                    : { color: "#BDBDBD" },
+                ]}
+              >
+                Опубліковати
+              </Text>
             </TouchableOpacity>
           </View>
           <View style={styles.buttonDeleteBox}>
@@ -183,7 +214,6 @@ const styles = StyleSheet.create({
     height: 60,
     alignItems: "center",
     justifyContent: "center",
-    backgroundColor: "#FFFFFF",
     borderRadius: 50,
   },
   addPhotoIcon: {
@@ -217,13 +247,11 @@ const styles = StyleSheet.create({
     marginTop: 32,
     paddingVertical: 16,
     alignItems: "center",
-    backgroundColor: "#F6F6F6",
     borderRadius: 100,
   },
   createFormButtonText: {
     fontFamily: "roboto-r",
     fontSize: 16,
-    color: "#BDBDBD",
   },
   buttonDeleteBox: {
     alignItems: "center",

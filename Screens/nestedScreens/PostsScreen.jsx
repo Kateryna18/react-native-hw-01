@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { StatusBar } from "expo-status-bar";
 import {
   Text,
@@ -9,8 +9,15 @@ import {
   KeyboardAvoidingView,
   StyleSheet,
 } from "react-native";
+import { useRoute } from '@react-navigation/native';
 
 export default function PostsScreen() {
+  const [posts, setPosts] = useState(null);
+
+  const { params } = useRoute();
+  console.log("params -->", params)
+
+
   return (
     <TouchableWithoutFeedback>
       <View style={styles.mainContainer}>
