@@ -35,17 +35,17 @@ export default function HomeScreen() {
           name="Posts"
           component={PostsScreen}
           options={{
-            title: "Публікації",
+            headerShown: false,
             headerTitleAlign: "center",
             tabBarIcon: ({ focused, size, color: tintColor }) => (
               <Feather name="grid" size={24} color={tintColor} />
             ),
-            headerRight: () => (
-              <TouchableOpacity onPress={() => navigation.navigate("Login")}>
-                <Feather name="log-out" size={24} color="#BDBDBD" />
-              </TouchableOpacity>
-            ),
-            headerRightContainerStyle: { paddingRight: 10 },
+            // headerRight: () => (
+            //   <TouchableOpacity onPress={() => navigation.navigate("Login")}>
+            //     <Feather name="log-out" size={24} color="#BDBDBD" />
+            //   </TouchableOpacity>
+            // ),
+            // headerRightContainerStyle: { paddingRight: 10 },
           }}
         />
         <tabNav.Screen

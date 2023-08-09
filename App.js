@@ -36,7 +36,7 @@ export default function App() {
   }
 
   return <NavigationContainer>
-    <authNav.Navigator initialRouteName="Login" screenOptions={{ headerShown: false }}>
+    <authNav.Navigator initialRouteName="Login" screenOptions={{ headerShown: false, }}>
         <authNav.Screen
           name="Registration"
           component={RegistrationScreen}
@@ -48,6 +48,7 @@ export default function App() {
         <authNav.Screen
           name="Home"
           component={HomeScreen}
+          options={{ gestureEnabled: false, }}
         />
       </authNav.Navigator>
   </NavigationContainer>;
