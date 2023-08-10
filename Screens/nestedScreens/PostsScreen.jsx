@@ -18,7 +18,6 @@ export default function PostsScreen() {
   const [posts, setPosts] = useState([]);
 
   const { params } = useRoute();
-  console.log("params -->", params);
   
 
   useEffect(() => {
@@ -28,7 +27,8 @@ export default function PostsScreen() {
     setPosts(prevState => [...prevState, params])
   }, [params])
 
-  console.log("posts -->", posts);
+  console.log("params -->", params);
+  // console.log("posts -->", posts);
   
 
   return (

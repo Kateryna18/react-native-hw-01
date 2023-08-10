@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { StatusBar } from "expo-status-bar";
 import { FontAwesome, Feather } from "@expo/vector-icons";
 import {
@@ -14,8 +14,8 @@ import {
 } from "react-native";
 import { Camera } from "expo-camera";
 import * as MediaLibrary from "expo-media-library";
+import * as Location from "expo-location";
 import { useNavigation } from "@react-navigation/native";
-
 
 export default function CreatePostsScreen() {
   const [cameraRef, setCameraRef] = useState(null);
@@ -25,8 +25,21 @@ export default function CreatePostsScreen() {
   const [photo, setPhoto] = useState(null);
   const [title, setTitle] = useState("");
   const [location, setLocation] = useState("");
+  const [geoLocation, setGeoLocation] = useState(null);
   const navigation = useNavigation();
+  const [errorMsg, setErrorMsg] = useState(null);
 
+  useEffect(() => {
+    async () => {
+      const { status } = await Location.requestForegroundPermissionsAsync();
+
+      if (status !== "granted") {
+        console.log("IFgranted")
+        setErrorMsg("Відхилено в доступі до місцязнаходження");
+        return;
+      }
+    };
+  }, []);
 
   if (!permission) {
     return <Text>LOADING...</Text>;
@@ -45,10 +58,15 @@ export default function CreatePostsScreen() {
 
   const takePhoto = async () => {
     const { uri } = await cameraRef.takePictureAsync();
-    // console.log(uri);
     setPhoto(uri);
+    console.log("uri->", uri);
     const asset = await MediaLibrary.createAssetAsync(uri);
-    // console.log(asset)
+    console.log("asset");
+    console.log("geoLocationBefore->", geoLocation);
+    const { coords } = await Location.getCurrentPositionAsync({});
+    console.log("coords->", coords);
+    setGeoLocation(coords);
+    console.log("geoLocationAfter->", geoLocation);
   };
 
   const deletePhoto = () => {
@@ -56,11 +74,12 @@ export default function CreatePostsScreen() {
   };
 
   const handleSubmit = () => {
-    navigation.navigate("Posts", {photo, title, location} );
+    navigation.navigate("Posts", { photo, title, location, geoLocation });
 
     setTitle("");
     setLocation("");
     setPhoto(null);
+    setGeoLocation(null);
   };
 
   return (

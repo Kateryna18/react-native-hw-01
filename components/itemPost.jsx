@@ -12,14 +12,17 @@ import {
 import { Feather } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 
-export default function ItemPost({ post }) {
+export default function ItemPost({post}) {
   const navigation = useNavigation();
+
+  const {photo, title, location, geoLocation} = post;
+  console.log("posts->", post)
 
   return (
     <TouchableWithoutFeedback >
       <View style={styles.itemPost}>
-        <Image style={styles.photoImg} source={{ uri: post.photo }} />
-        <Text style={styles.itemTitle}>{post.title}</Text>
+        <Image style={styles.photoImg} source={{ uri: photo }} />
+        <Text style={styles.itemTitle}>{title}</Text>
         <View style={styles.itemInfoBox}>
           <TouchableOpacity style={styles.itemInfoButton} onPress={() => {navigation.navigate("CommentsScreen")}} >
             <Feather
@@ -32,7 +35,7 @@ export default function ItemPost({ post }) {
               0
             </Text>
           </TouchableOpacity>
-          <TouchableOpacity style={styles.itemInfoButton} onPress={() => {navigation.navigate("MapScreen")}}>
+          <TouchableOpacity style={styles.itemInfoButton} onPress={() => {navigation.navigate("MapScreen", {geoLocation, title})}}>
             <Feather
               name="map-pin"
               size={24}
@@ -45,7 +48,7 @@ export default function ItemPost({ post }) {
                 { color: "#212121", textDecorationLine: "underline" },
               ]}
             >
-              {post.location}
+              {location}
             </Text>
           </TouchableOpacity>
         </View>
