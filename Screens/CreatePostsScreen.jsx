@@ -27,7 +27,6 @@ export default function CreatePostsScreen() {
   const [location, setLocation] = useState("");
   const navigation = useNavigation();
 
-  // console.log(photo);
 
   if (!permission) {
     return <Text>LOADING...</Text>;
@@ -57,7 +56,7 @@ export default function CreatePostsScreen() {
   };
 
   const handleSubmit = () => {
-    navigation.navigate("Posts", {screen: "DefaultScreen", params: {photo, title, location} });
+    navigation.navigate("Posts", {photo, title, location} );
 
     setTitle("");
     setLocation("");

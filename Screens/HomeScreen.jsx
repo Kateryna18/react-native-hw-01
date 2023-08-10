@@ -10,15 +10,17 @@ import {
   StyleSheet,
   FlatList,
 } from "react-native";
-import DefaultScreen from "./nestedScreens/DefaultScreen";
 import CommentsScreen from "./nestedScreens/CommentsScreen";
 import MapScreen from "./nestedScreens/MapScreen";
+import DefaultScreen from "./authScreens/DefaultScreen";
 import { Feather } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 
+
+
 const nestedScreen = createStackNavigator();
 
-export default function PostsScreen() {
+export default function HomeScreen() {
   const navigation = useNavigation();
 
   return (
@@ -27,15 +29,16 @@ export default function PostsScreen() {
         name="DefaultScreen"
         component={DefaultScreen}
         options={{
-          title: "Публікації",
-          headerBackTitleVisible: false,
-          headerRight: () => (
-            <TouchableOpacity onPress={() => navigation.navigate("Login")}>
-              <Feather name="log-out" size={24} color="#BDBDBD" />
-            </TouchableOpacity>
-          ),
-          headerLeft:  () => false,
-          headerRightContainerStyle: { paddingRight: 16 },
+          headerShown: false,
+          // title: "Публікації",
+          // headerBackTitleVisible: false,
+          // headerRight: () => (
+          //   <TouchableOpacity onPress={() => navigation.navigate("Login")}>
+          //     <Feather name="log-out" size={24} color="#BDBDBD" />
+          //   </TouchableOpacity>
+          // ),
+          // headerLeft:  () => false,
+          // headerRightContainerStyle: { paddingRight: 16 },
           
         }}
       />
@@ -44,7 +47,7 @@ export default function PostsScreen() {
         component={CommentsScreen}
         options={{ title: "Коментарі",  headerBackTitleVisible: false,}}
       />
-      <nestedScreen.Screen name="MapScreen" component={MapScreen} />
+      <nestedScreen.Screen name="MapScreen" component={MapScreen} options={{ title: "Карта",  headerBackTitleVisible: false,}}/>
     </nestedScreen.Navigator>
   );
 }

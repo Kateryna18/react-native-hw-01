@@ -12,8 +12,12 @@ import {
   ImageBackground,
 } from "react-native";
 import bckImage from "../assets/photo-bg.png";
+import { useNavigation } from "@react-navigation/native";
 
 export default function ProfileScreen() {
+  const navigation = useNavigation();
+
+  
   return (
     <TouchableWithoutFeedback>
       <View style={styles.mainContainer}>
@@ -27,6 +31,7 @@ export default function ProfileScreen() {
             <TouchableOpacity
                 activeOpacity={0.8}
                 style={styles.profileLogoutButton}
+                onPress={() => navigation.navigate("Login")}
               >
                 <Feather name="log-out"  size={24} color="#BDBDBD" />
               </TouchableOpacity>

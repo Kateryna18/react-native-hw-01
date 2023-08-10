@@ -2,22 +2,16 @@ import React from "react";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { Feather } from "@expo/vector-icons";
 import { TouchableOpacity } from "react-native";
-import PostsScreen from "../PostsScreen";
+import { useNavigation } from "@react-navigation/native";
 import CreatePostsScreen from "../CreatePostsScreen";
 import ProfileScreen from "../ProfileScreen";
-import { useNavigation, getFocusedRouteNameFromRoute } from "@react-navigation/native";
+import PostsScreen from "../nestedScreens/PostsScreen";
+
 
 const tabNav = createBottomTabNavigator();
 
-export default function HomeScreen() {
+export default function DefaultScreen() {
   const navigation = useNavigation();
-
-
-  const getHeaderTitle = (route) => {  
-    const routeName = getFocusedRouteNameFromRoute(route) ?? 'Home';
-    let display = (routeName === 'Коментарі') ? 'none':'flex';
-    return {display}
-  }
 
   return (
     <>
@@ -42,11 +36,18 @@ export default function HomeScreen() {
           name="Posts"
           component={PostsScreen}
           options={{
-            headerShown: false,
+            title: "Публікації",
+            // headerShown: false,
             headerTitleAlign: "center",
             tabBarIcon: ({ focused, size, color: tintColor }) => (
               <Feather name="grid" size={24} color={tintColor} />
             ),
+            headerRight: () => (
+              <TouchableOpacity onPress={() => navigation.navigate("Login")}>
+                <Feather name="log-out" size={24} color="#BDBDBD" />
+              </TouchableOpacity>
+            ),
+            headerRightContainerStyle: { paddingRight: 16 },
           }}
         />
         <tabNav.Screen

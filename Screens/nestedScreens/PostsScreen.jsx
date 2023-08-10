@@ -14,7 +14,7 @@ import { useRoute } from "@react-navigation/native";
 import ItemPost from "../../components/itemPost";
 
 
-export default function DefaultScreen() {
+export default function PostsScreen() {
   const [posts, setPosts] = useState([]);
 
   const { params } = useRoute();
