@@ -34,7 +34,8 @@ export default function PostsScreen() {
               <Feather name="log-out" size={24} color="#BDBDBD" />
             </TouchableOpacity>
           ),
-          headerRightContainerStyle: { paddingRight: 10 },
+          headerLeft:  () => false,
+          headerRightContainerStyle: { paddingRight: 16 },
           
         }}
       />
