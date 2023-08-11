@@ -26,9 +26,6 @@ export default function PostsScreen() {
     }
     setPosts(prevState => [...prevState, params])
   }, [params])
-
-  console.log("params -->", params);
-  // console.log("posts -->", posts);
   
 
   return (

@@ -16,7 +16,6 @@ export default function ItemPost({post}) {
   const navigation = useNavigation();
 
   const {photo, title, location, geoLocation} = post;
-  console.log("posts->", post)
 
   return (
     <TouchableWithoutFeedback >

@@ -10,7 +10,6 @@ import {
   TouchableOpacity,
   KeyboardAvoidingView,
   StyleSheet,
-  Button,
 } from "react-native";
 import { Camera } from "expo-camera";
 import * as MediaLibrary from "expo-media-library";
@@ -19,54 +18,51 @@ import { useNavigation } from "@react-navigation/native";
 
 export default function CreatePostsScreen() {
   const [cameraRef, setCameraRef] = useState(null);
-  const [permission, requestPermission] = Camera.useCameraPermissions();
-  const [permissionResponse, requestPermissionMediaLibrary] =
-    MediaLibrary.usePermissions();
   const [photo, setPhoto] = useState(null);
   const [title, setTitle] = useState("");
   const [location, setLocation] = useState("");
   const [geoLocation, setGeoLocation] = useState(null);
   const navigation = useNavigation();
-  const [errorMsg, setErrorMsg] = useState(null);
+  const [hasPermission, setHasPermission] = useState(null);
 
   useEffect(() => {
-    async () => {
-      const { status } = await Location.requestForegroundPermissionsAsync();
+    (async () => {
+      const camera = await Camera.requestCameraPermissionsAsync();
+      const location = await Location.requestForegroundPermissionsAsync();
+      await MediaLibrary.requestPermissionsAsync();
 
-      if (status !== "granted") {
-        console.log("IFgranted")
-        setErrorMsg("Відхилено в доступі до місцязнаходження");
-        return;
-      }
-    };
+      setHasPermission(
+        camera.status === "granted" && location.status === "granted"
+      );
+    })();
   }, []);
 
-  if (!permission) {
-    return <Text>LOADING...</Text>;
-  }
-
-  if (!permission.granted) {
+  if (!hasPermission) {
     return (
       <View style={styles.mainContainer}>
         <Text style={{ textAlign: "center" }}>
           We need your permission to show the camera
         </Text>
-        <Button onPress={requestPermission} title="grant permission" />
       </View>
     );
   }
 
   const takePhoto = async () => {
-    const { uri } = await cameraRef.takePictureAsync();
-    setPhoto(uri);
-    console.log("uri->", uri);
-    const asset = await MediaLibrary.createAssetAsync(uri);
-    console.log("asset");
-    console.log("geoLocationBefore->", geoLocation);
-    const { coords } = await Location.getCurrentPositionAsync({});
-    console.log("coords->", coords);
-    setGeoLocation(coords);
-    console.log("geoLocationAfter->", geoLocation);
+    if (cameraRef) {
+      const { uri } = await cameraRef.takePictureAsync();
+      if (uri) {
+        setPhoto(uri);
+      }
+      await MediaLibrary.createAssetAsync(uri);
+
+      const location = await Location.getCurrentPositionAsync({});
+      const coords = {
+        latitude: location.coords.latitude,
+        longitude: location.coords.longitude,
+      };
+      console.log("cords->", coords)
+      setGeoLocation(coords);
+    }
   };
 
   const deletePhoto = () => {
@@ -76,6 +72,10 @@ export default function CreatePostsScreen() {
   const handleSubmit = () => {
     navigation.navigate("Posts", { photo, title, location, geoLocation });
 
+    clearPostData();
+  };
+
+  const clearPostData = () => {
     setTitle("");
     setLocation("");
     setPhoto(null);
