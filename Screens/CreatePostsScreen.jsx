@@ -10,6 +10,7 @@ import {
   TouchableOpacity,
   KeyboardAvoidingView,
   StyleSheet,
+  Alert,
 } from "react-native";
 import { Camera } from "expo-camera";
 import * as MediaLibrary from "expo-media-library";
@@ -41,7 +42,7 @@ export default function CreatePostsScreen() {
     return (
       <View style={styles.mainContainer}>
         <Text style={{ textAlign: "center" }}>
-          We need your permission to show the camera
+          Нам потрібен ваш дозвіл, щоб показати камеру!
         </Text>
       </View>
     );
@@ -60,7 +61,6 @@ export default function CreatePostsScreen() {
         latitude: location.coords.latitude,
         longitude: location.coords.longitude,
       };
-      console.log("cords->", coords)
       setGeoLocation(coords);
     }
   };
@@ -70,6 +70,13 @@ export default function CreatePostsScreen() {
   };
 
   const handleSubmit = () => {
+    if (!geoLocation) {
+      Alert.alert(
+        "Warning",
+        "Зачекайте деілька хвилин, ми оброблюємо ваші дані для публікації посту!"
+      );
+      return;
+    }
     navigation.navigate("Posts", { photo, title, location, geoLocation });
 
     clearPostData();

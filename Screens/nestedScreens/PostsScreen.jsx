@@ -5,7 +5,6 @@ import {
   TouchableWithoutFeedback,
   View,
   Image,
-  TouchableOpacity,
   KeyboardAvoidingView,
   StyleSheet,
   FlatList,
@@ -16,7 +15,6 @@ import ItemPost from "../../components/itemPost";
 
 export default function PostsScreen() {
   const [posts, setPosts] = useState([]);
-
   const { params } = useRoute();
   
 
@@ -64,6 +62,7 @@ const styles = StyleSheet.create({
   mainContainer: {
     flex: 1,
     paddingTop: 32,
+    paddingBottom: 70,
     paddingHorizontal: 16,
     backgroundColor: "#FFFFFF",
   },
@@ -71,6 +70,7 @@ const styles = StyleSheet.create({
   headerBox: {
     flexDirection: "row",
     alignItems: "center",
+    marginBottom: 32,
   },
   avatarBox: {
     marginRight: 8,

@@ -5,9 +5,7 @@ import {
   View,
   Image,
   TouchableOpacity,
-  KeyboardAvoidingView,
   StyleSheet,
-  FlatList,
 } from "react-native";
 import { Feather } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
@@ -58,7 +56,7 @@ export default function ItemPost({post}) {
 
 const styles = StyleSheet.create({
   itemPost: {
-    marginTop: 32,
+    marginBottom: 32,
   },
   photoImg: {
     position: "relative",

@@ -1,95 +1,91 @@
 import React from "react";
-import { StatusBar } from "expo-status-bar";
 import {
-  Text,
   TextInput,
-  TouchableWithoutFeedback,
   View,
   Image,
   TouchableOpacity,
   KeyboardAvoidingView,
   StyleSheet,
+  FlatList,
 } from "react-native";
 import { Feather } from "@expo/vector-icons";
 
 export default function CommentsScreen() {
   return (
-    <TouchableWithoutFeedback>
-      <View style={styles.mainContainer}>
-        <StatusBar style="auto" />
-        <KeyboardAvoidingView behavior={"height"} keyboardVerticalOffset={32}>
-          <View style={styles.mainContent}>
-            <Image
-              source={require("../../assets/avatar.png")}
-              style={styles.photoImg}
-            />
-            <View style={styles.commentsBox}></View>
-          </View>
-          <View style={styles.commentsInputBox}>
-              <TextInput
-                style={styles.commentsInput}
-                placeholder="Коментувати..."
-              />
-              <TouchableOpacity style={styles.commentsInputButton}>
-                <Feather name="arrow-up" size={24} color="#FFFFFF" />
-              </TouchableOpacity>
-            </View>
-        </KeyboardAvoidingView>
+    <KeyboardAvoidingView
+      style={{ flex: 1, justifyContent: "flex-end" }}
+      behavior={Platform.OS === "ios" ? "padding" : "heigth"}
+    >
+      <View style={styles.container}>
+        <View style={styles.photoContainer}>
+          <Image
+            source={require("../../assets/avatar.png")}
+            style={styles.photo}
+          />
+        </View>
+        <View style={styles.commentsContainer}>
+          <FlatList />
+        </View>
+        <View style={{ position: "relative" }}>
+          <TextInput
+            style={styles.input}
+            placeholder="Коментувати..."
+            placeholderTextColor="#BDBDBD"
+          />
+          <TouchableOpacity activeOpacity={0.8} style={styles.btn}>
+            <Feather name="arrow-up" size={24} color="#ffffff" />
+          </TouchableOpacity>
+        </View>
       </View>
-    </TouchableWithoutFeedback>
+    </KeyboardAvoidingView>
   );
 }
 
 const styles = StyleSheet.create({
-  mainContainer: {
+  container: {
     flex: 1,
+    position: "relative",
+    gap: 32,
+    backgroundColor: "#ffffff",
     paddingHorizontal: 16,
-    backgroundColor: "#FFFFFF",
-  },
-  mainContent: {
     justifyContent: "flex-end",
-    paddingTop: 32,
-    paddingBottom: 16,
   },
-  photoImg: {
+  photoContainer: {
+    marginTop: 32,
     width: "100%",
     height: 240,
-    marginBottom: 32,
-    justifyContent: "center",
-    alignItems: "center",
-    backgroundColor: "#F6F6F6",
     borderRadius: 8,
-    borderWidth: 1,
-    borderColor: "#E8E8E8",
+    overflow: "hidden",
   },
-  commentsBox: {
-    height: 323,
-    marginBottom: 31,
-    borderWidth: 1,
-    borderColor: "red",
-  },
-  commentsInputBox: {
-    position: "relative",
+  photo: {
     width: "100%",
+    height: "100%",
+    resizeMode: "cover",
+  },
+  commentsContainer: {
+    flex: 1,
+  },
+  input: {
     padding: 16,
+    marginBottom: 16,
+    textAlign: "left",
+    fontFamily: "roboto-r",
+    fontSize: 16,
+    color: "#212121",
     backgroundColor: "#F6F6F6",
     borderWidth: 1,
+    borderRadius: 50,
     borderColor: "#E8E8E8",
-    borderRadius: 100,
   },
-  commentsInput: {
-    color: "#BDBDBD",
-    fontSize: 16,
-  },
-  commentsInputButton: {
+  btn: {
     position: "absolute",
     top: 8,
     right: 8,
     width: 34,
     height: 34,
-    alignItems: "center",
-    justifyContent: "center",
     backgroundColor: "#FF6C00",
     borderRadius: 50,
+    justifyContent: "center",
+    alignItems: "center",
   },
 });
