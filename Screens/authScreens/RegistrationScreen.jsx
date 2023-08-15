@@ -63,7 +63,7 @@ export default function RegistrationScreen() {
 
     console.log(registerData);
     dispatch(authSighUp(registerData))
-    navigation.navigate("Home")
+    // navigation.navigate("Home")
     clearRegisterForm();
   };
 

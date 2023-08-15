@@ -57,7 +57,7 @@ export default function LoginScreen() {
 
     console.log(registerData);
     dispatch(authSighIn(registerData))
-    navigation.navigate("Home")
+    // navigation.navigate("Home")
     clearRegisterForm();
   };
 
