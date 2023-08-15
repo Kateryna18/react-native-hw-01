@@ -15,6 +15,8 @@ import {
 } from "react-native";
 import bckImage from "../../assets/photo-bg.png";
 import { useNavigation } from "@react-navigation/native";
+import { useSelector, useDispatch } from 'react-redux';
+import {authSighIn} from "../../redux/auth/authOperations";
 
 export default function LoginScreen() {
   const [email, setEmail] = useState("");
@@ -25,6 +27,7 @@ export default function LoginScreen() {
   });
   const [isShowPassword, setShowPassword] = useState(true);
   const navigation = useNavigation();
+  const dispatch = useDispatch();
 
   const keyBoardHide = () => {
     setIsFocused({
@@ -53,6 +56,7 @@ export default function LoginScreen() {
     }
 
     console.log(registerData);
+    dispatch(authSighIn(registerData))
     navigation.navigate("Home")
     clearRegisterForm();
   };
