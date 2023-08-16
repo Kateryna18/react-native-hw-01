@@ -3,15 +3,18 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { Feather } from "@expo/vector-icons";
 import { TouchableOpacity } from "react-native";
 import { useNavigation } from "@react-navigation/native";
+import { useSelector, useDispatch } from "react-redux";
 import CreatePostsScreen from "../CreatePostsScreen";
 import ProfileScreen from "../ProfileScreen";
 import PostsScreen from "../nestedScreens/PostsScreen";
+import { authSighOut } from "../../redux/auth/authOperations";
 
 
 const tabNav = createBottomTabNavigator();
 
 export default function DefaultScreen() {
   const navigation = useNavigation();
+  const dispatch = useDispatch();
 
   return (
     <>
@@ -43,7 +46,7 @@ export default function DefaultScreen() {
               <Feather name="grid" size={24} color={tintColor} />
             ),
             headerRight: () => (
-              <TouchableOpacity onPress={() => navigation.navigate("Login")}>
+              <TouchableOpacity onPress={() => dispatch(authSighOut())}>
                 <Feather name="log-out" size={24} color="#BDBDBD" />
               </TouchableOpacity>
             ),

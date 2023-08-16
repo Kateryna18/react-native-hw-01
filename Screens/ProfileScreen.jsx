@@ -13,11 +13,14 @@ import {
 } from "react-native";
 import bckImage from "../assets/photo-bg.png";
 import { useNavigation } from "@react-navigation/native";
+import { useSelector, useDispatch } from "react-redux";
+import { authSighOut } from "../redux/auth/authOperations";
 
 export default function ProfileScreen() {
   const navigation = useNavigation();
+  const dispatch = useDispatch();
 
-  
+
   return (
     <TouchableWithoutFeedback>
       <View style={styles.mainContainer}>
@@ -29,12 +32,12 @@ export default function ProfileScreen() {
             keyboardVerticalOffset={32}
           >
             <TouchableOpacity
-                activeOpacity={0.8}
-                style={styles.profileLogoutButton}
-                onPress={() => navigation.navigate("Login")}
-              >
-                <Feather name="log-out"  size={24} color="#BDBDBD" />
-              </TouchableOpacity>
+              activeOpacity={0.8}
+              style={styles.profileLogoutButton}
+              onPress={() => dispatch(authSighOut())}
+            >
+              <Feather name="log-out" size={24} color="#BDBDBD" />
+            </TouchableOpacity>
             <View style={styles.profileImg}>
               {/* <Image
             // style={styles.registerImg}
@@ -56,7 +59,7 @@ export default function ProfileScreen() {
         </ImageBackground>
       </View>
     </TouchableWithoutFeedback>
-  )
+  );
 }
 
 const styles = StyleSheet.create({
@@ -114,5 +117,4 @@ const styles = StyleSheet.create({
       },
     }),
   },
-
 });
