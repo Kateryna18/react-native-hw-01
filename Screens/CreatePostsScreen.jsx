@@ -16,6 +16,11 @@ import { Camera } from "expo-camera";
 import * as MediaLibrary from "expo-media-library";
 import * as Location from "expo-location";
 import { useNavigation } from "@react-navigation/native";
+import { nanoid } from "@reduxjs/toolkit";
+import { storage, db } from "../firebase/config";
+import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
+import { collection, addDoc } from "firebase/firestore";
+import { useSelector } from "react-redux";
 
 export default function CreatePostsScreen() {
   const [cameraRef, setCameraRef] = useState(null);
@@ -25,6 +30,7 @@ export default function CreatePostsScreen() {
   const [geoLocation, setGeoLocation] = useState(null);
   const navigation = useNavigation();
   const [hasPermission, setHasPermission] = useState(null);
+  const {userId, login, email} = useSelector(state => state.auth)
 
   useEffect(() => {
     (async () => {
@@ -69,6 +75,33 @@ export default function CreatePostsScreen() {
     setPhoto(null);
   };
 
+  const uploadPhotoToServer = async () => {
+    const response = await fetch(photo);
+    const file = await response.blob();
+
+    const uniquePostId = nanoid();
+    const storageRef = ref(storage, `postImage/${uniquePostId}`);
+
+    await uploadBytes(storageRef, file);
+    await getDownloadURL(storageRef).then((url) => {
+      photoUrl = url;
+    }); 
+    
+    return photoUrl;
+  }
+
+  const uploadPostToServer = async () => {
+    const photo = await uploadPhotoToServer();
+
+    try {
+      await addDoc(collection(db, "posts"), {
+        photo, email, location, userId, login, title
+      });
+    } catch (error) {
+      console.log(error.message)
+    }
+  }
+
   const handleSubmit = () => {
     if (!geoLocation) {
       Alert.alert(
@@ -77,9 +110,9 @@ export default function CreatePostsScreen() {
       );
       return;
     }
-    navigation.navigate("Posts", { photo, title, location, geoLocation });
-
+    uploadPostToServer();
     clearPostData();
+    navigation.navigate("Posts", { photo, title, location, geoLocation });
   };
 
   const clearPostData = () => {
