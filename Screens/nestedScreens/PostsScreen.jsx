@@ -11,6 +11,8 @@ import {
 } from "react-native";
 import { useRoute } from "@react-navigation/native";
 import ItemPost from "../../components/itemPost";
+import { db } from "../../firebase/config";
+import { collection, getDocs, doc } from 'firebase/firestore';
 
 
 export default function PostsScreen() {
@@ -19,11 +21,27 @@ export default function PostsScreen() {
   
 
   useEffect(() => {
-    if(!params) {
-      return
+    getAllPosts()
+  }, [])
+
+  const getAllPosts = async() => {
+    try {
+      const allPosts = [];
+
+      const snapshot = await getDocs(collection(db, 'posts'));
+      console.log("snapshot->", snapshot)
+
+      snapshot.forEach((doc) => allPosts.push({ ...doc.data(), id: doc.id }));
+
+      // const sortedPostsByDate = allPosts.sort(
+      //   (firstPost, secondPost) => firstPost.date - secondPost.date
+      // );
+
+      setPosts(allPosts);
+    } catch (error) {
+      console.log(error);
     }
-    setPosts(prevState => [...prevState, params])
-  }, [params])
+  }
   
 
   return (

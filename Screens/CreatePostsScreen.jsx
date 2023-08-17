@@ -30,7 +30,7 @@ export default function CreatePostsScreen() {
   const [geoLocation, setGeoLocation] = useState(null);
   const navigation = useNavigation();
   const [hasPermission, setHasPermission] = useState(null);
-  const {userId, login, email} = useSelector(state => state.auth)
+  const { userId, login, email } = useSelector((state) => state.auth);
 
   useEffect(() => {
     (async () => {
@@ -85,22 +85,28 @@ export default function CreatePostsScreen() {
     await uploadBytes(storageRef, file);
     await getDownloadURL(storageRef).then((url) => {
       photoUrl = url;
-    }); 
-    
+    });
+
     return photoUrl;
-  }
+  };
 
   const uploadPostToServer = async () => {
     const photo = await uploadPhotoToServer();
 
     try {
       await addDoc(collection(db, "posts"), {
-        photo, email, location, userId, login, title
+        photo,
+        email,
+        geoLocation,
+        location,
+        userId,
+        login,
+        title,
       });
     } catch (error) {
-      console.log(error.message)
+      console.log(error.message);
     }
-  }
+  };
 
   const handleSubmit = () => {
     if (!geoLocation) {
@@ -112,7 +118,9 @@ export default function CreatePostsScreen() {
     }
     uploadPostToServer();
     clearPostData();
-    navigation.navigate("Posts", { photo, title, location, geoLocation });
+    navigation.navigate("Posts", 
+    // { photo, title, location, geoLocation }
+    );
   };
 
   const clearPostData = () => {
