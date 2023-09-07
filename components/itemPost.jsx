@@ -10,10 +10,10 @@ import {
 import { Feather } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 
-export default function ItemPost({post}) {
+export default function ItemPost({post, isProfile = false}) {
   const navigation = useNavigation();
 
-  const {photo, title, location, geoLocation} = post;
+  const {photo, title, location, geoLocation, id} = post;
 
   return (
     <TouchableWithoutFeedback >
@@ -21,7 +21,7 @@ export default function ItemPost({post}) {
         <Image style={styles.photoImg} source={{ uri: photo }} />
         <Text style={styles.itemTitle}>{title}</Text>
         <View style={styles.itemInfoBox}>
-          <TouchableOpacity style={styles.itemInfoButton} onPress={() => {navigation.navigate("CommentsScreen")}} >
+          <TouchableOpacity style={styles.itemInfoButton} onPress={() => {navigation.navigate("CommentsScreen", {postId: id, photo})}} >
             <Feather
               name="message-circle"
               size={24}

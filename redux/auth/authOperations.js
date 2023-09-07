@@ -71,3 +71,23 @@ export const authSighOut = () => async (dispatch, getState) => {
     
   }
 };
+
+export const authUpdateUserAvatar = ({ avatarUrl }) =>
+  async (dispatch, getState) => {
+    try {
+      await updateProfile(auth.currentUser, { photoURL: avatarUrl });
+      const user = auth.currentUser;
+      
+      if (user) {
+        dispatch(authSlice.actions.updateUserProfile({
+          userId: user.uid,
+          login: user.displayName,
+          email: user.email,
+          avatar: user.photoURL
+        }));
+      };
+        
+    } catch (error) {
+      console.log(error);
+    }
+  };

@@ -41,6 +41,13 @@ export default function CreatePostsScreen() {
       setHasPermission(
         camera.status === "granted" && location.status === "granted"
       );
+
+      const getLocation = await Location.getCurrentPositionAsync({});
+      const coords = {
+        latitude: getLocation.coords.latitude,
+        longitude: getLocation.coords.longitude,
+      };
+      setGeoLocation(coords);
     })();
   }, []);
 
@@ -62,12 +69,12 @@ export default function CreatePostsScreen() {
       }
       await MediaLibrary.createAssetAsync(uri);
 
-      const location = await Location.getCurrentPositionAsync({});
-      const coords = {
-        latitude: location.coords.latitude,
-        longitude: location.coords.longitude,
-      };
-      setGeoLocation(coords);
+      // const location = await Location.getCurrentPositionAsync({});
+      // const coords = {
+      //   latitude: location.coords.latitude,
+      //   longitude: location.coords.longitude,
+      // };
+      // setGeoLocation(coords);
     }
   };
 
@@ -76,6 +83,8 @@ export default function CreatePostsScreen() {
   };
 
   const uploadPhotoToServer = async () => {
+    let photoUrl = '';
+
     const response = await fetch(photo);
     const file = await response.blob();
 
@@ -109,17 +118,9 @@ export default function CreatePostsScreen() {
   };
 
   const handleSubmit = () => {
-    if (!geoLocation) {
-      Alert.alert(
-        "Warning",
-        "Зачекайте деілька хвилин, ми оброблюємо ваші дані для публікації посту!"
-      );
-      return;
-    }
     uploadPostToServer();
     clearPostData();
     navigation.navigate("Posts", 
-    // { photo, title, location, geoLocation }
     );
   };
 

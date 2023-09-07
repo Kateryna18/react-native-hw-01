@@ -13,11 +13,16 @@ import { useRoute } from "@react-navigation/native";
 import ItemPost from "../../components/itemPost";
 import { db } from "../../firebase/config";
 import { collection, getDocs, doc } from 'firebase/firestore';
+import { useSelector } from "react-redux";
 
 
 export default function PostsScreen() {
   const [posts, setPosts] = useState([]);
   const { params } = useRoute();
+  const {login, email} = useSelector(state => state.auth)
+
+  // console.log("posts->", posts)
+  console.log(email)
   
 
   useEffect(() => {
@@ -30,6 +35,7 @@ export default function PostsScreen() {
 
       const snapshot = await getDocs(collection(db, 'posts'));
       console.log("snapshot->", snapshot)
+
 
       snapshot.forEach((doc) => allPosts.push({ ...doc.data(), id: doc.id }));
 
@@ -61,8 +67,8 @@ export default function PostsScreen() {
               />
             </View>
             <View style={styles.userBox}>
-              <Text style={styles.nameUser}>Natali Romanova</Text>
-              <Text style={styles.emailUser}>email@example.com</Text>
+              <Text style={styles.nameUser}>{login}</Text>
+              <Text style={styles.emailUser}>{email}</Text>
             </View>
           </View>
           <FlatList 
