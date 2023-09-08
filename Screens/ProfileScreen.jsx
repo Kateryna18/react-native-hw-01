@@ -14,11 +14,11 @@ import {
   FlatList,
 } from "react-native";
 import bckImage from "../assets/photo-bg.png";
-import { useNavigation } from "@react-navigation/native";
 import { useSelector, useDispatch } from "react-redux";
 import {
   authSighOut,
   authUpdateUserAvatar,
+  authDeleteUserAvatar,
 } from "../redux/auth/authOperations";
 import { db, storage } from "../firebase/config";
 import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
@@ -28,19 +28,15 @@ import {
   query,
   where,
   doc,
-  addDoc,
   updateDoc,
 } from "firebase/firestore";
 import ItemPost from "../components/itemPost";
 import * as ImagePicker from "expo-image-picker";
 
 export default function ProfileScreen() {
-  const navigation = useNavigation();
   const dispatch = useDispatch();
   const { login, avatar, userId } = useSelector((state) => state.auth);
   const [userPosts, setUserPosts] = useState([]);
-
-  console.log("avatar->", avatar);
 
   useEffect(() => {
     getUserPosts();
@@ -59,10 +55,6 @@ export default function ProfileScreen() {
       const q = query(collection(db, "posts"), where("userId", "==", userId));
       const snapshot = await getDocs(q);
       snapshot.forEach((doc) => posts.push({ ...doc.data(), id: doc.id }));
-
-      // const sortedPostsByDate = posts.sort(
-      //   (firstPost, secondPost) => firstPost.date - secondPost.date
-      // );
 
       setUserPosts(posts);
     } catch (error) {
@@ -85,7 +77,6 @@ export default function ProfileScreen() {
 
   const uploadAvatarToServer = async () => {
     let avatarUrl = await pickAvatar();
-    console.log("avatarUrl->", avatarUrl);
 
     const response = await fetch(avatarUrl);
     const file = await response.blob();
@@ -116,25 +107,25 @@ export default function ProfileScreen() {
     dispatch(authUpdateUserAvatar({ avatarUrl }));
   };
 
-  // const clearAvatar = async () => {
-  //   dispatch(authDeleteUserAvatar());
+  const clearAvatar = async () => {
+    dispatch(authDeleteUserAvatar());
 
-  //   const snapshotPosts = await getDocs(collection(db, 'posts'));
+    const snapshotPosts = await getDocs(collection(db, 'posts'));
 
-  //   snapshotPosts.forEach(async (post) => {
-  //     const refPost = doc(db, "posts", post.id);
+    snapshotPosts.forEach(async (post) => {
+      const refPost = doc(db, "posts", post.id);
 
-  //     const snapshotComments = await getDocs(collection(refPost, 'comments'));
+      const snapshotComments = await getDocs(collection(refPost, 'comments'));
 
-  //     snapshotComments.forEach(async (comment) => {
-  //       const refComment = doc(refPost, "comments", comment.id);
+      snapshotComments.forEach(async (comment) => {
+        const refComment = doc(refPost, "comments", comment.id);
 
-  //       if (comment.data().userId === userId) {
-  //         await updateDoc(refComment, { avatar: null });
-  //       };
-  //     })
-  //   })
-  // };
+        if (comment.data().userId === userId) {
+          await updateDoc(refComment, { avatar: null });
+        };
+      })
+    })
+  };
 
   return (
     <TouchableWithoutFeedback>
@@ -164,6 +155,7 @@ export default function ProfileScreen() {
                 <TouchableOpacity
                   activeOpacity={0.8}
                   style={styles.registerImgButton}
+                  onPress={clearAvatar}
                 >
                   <AntDesign name="closecircleo" size={25} color="#E8E8E8" />
                 </TouchableOpacity>

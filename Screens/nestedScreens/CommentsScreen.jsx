@@ -14,6 +14,12 @@ import { Feather } from "@expo/vector-icons";
 import { db } from "../../firebase/config";
 import { collection, getDocs, doc, addDoc } from "firebase/firestore";
 import { useSelector } from "react-redux";
+import { format } from 'date-fns';
+import  { uk }  from 'date-fns/locale';
+
+const convertDateToString = (date) => {
+  return format(date, "d MMMM, yyyy | HH:mm", { locale: uk });
+};
 
 
 export default function CommentsScreen({ route }) {
@@ -22,22 +28,16 @@ export default function CommentsScreen({ route }) {
   const [comment, setComment] = useState("");
   const [allComments, setAllComments] = useState([]);
 
-  console.log("comment->", comment);
-
   useEffect(() => {
     getComments();
-    // const timerId = setInterval(() => {
-    //   getComments();
-    // }, 30000);
-   
-    // return () => clearInterval(timerId);
   }, [getComments]);
 
   const createComment = async () => {
+    const date = new Date().getTime();
     try {
       const refPost = doc(db, "posts", postId);
 
-      await addDoc(collection(refPost, 'comments'), {comment, userId, avatar})
+      await addDoc(collection(refPost, 'comments'), {comment, userId, avatar, date})
     } catch (error) {
       console.log(error)
     }
@@ -50,23 +50,21 @@ export default function CommentsScreen({ route }) {
 
       const snapshot = await getDocs(collection(refPost, 'comments'));
       snapshot.forEach((doc) => comments.push({ ...doc.data(), id: doc.id }));
-      
-      // const sortedCommentsByDate = comments.sort((
-      //   firstComment, secondComment) => firstComment.date - secondComment.date
-      // );
 
-      setAllComments(comments);
+      const sortedCommentsByDate = comments.sort((
+        firstComment, secondComment) => firstComment.date - secondComment.date
+      );
+
+      setAllComments(sortedCommentsByDate);
       
     } catch (error) {
       console.log(error);
     }
   };
 
-  console.log("allComments->", allComments)
 
   /////////////////////////////////////////////////////
   const renderItem = ({ item }) => {
-    console.log("item->", item)
     return (
     <TouchableOpacity activeOpacity={1} 
     style={{
@@ -89,7 +87,7 @@ export default function CommentsScreen({ route }) {
           ...styles.commentDate,
           textAlign: (item.userId === userId) ? "left" : "right",
         }}>
-          {/* {convertDateToString(item.date)} */}
+          {convertDateToString(item.date)}
         </Text>
       </View>
     </TouchableOpacity>
@@ -106,7 +104,8 @@ const addComment = () => {
   return (
     <KeyboardAvoidingView
       style={{ flex: 1, justifyContent: "flex-end" }}
-      behavior={Platform.OS === "ios" ? "padding" : "heigth"}
+      behavior={"padding"}
+      keyboardVerticalOffset={90}
     >
       <View style={styles.container}>
         <View style={styles.photoContainer}>
@@ -120,8 +119,6 @@ const addComment = () => {
             data={allComments}
             keyExtractor={(item) => item.id}
             renderItem={renderItem}
-            // ref={ref}
-            // onContentSizeChange={handleScrollToEnd} 
           />
         </View>
         <View style={{ position: "relative" }}>
@@ -234,52 +231,3 @@ const styles = StyleSheet.create({
 
 });
 
-
-// const styles = StyleSheet.create({
-//   container: {
-//     flex: 1,
-//     position: "relative",
-//     gap: 32,
-//     backgroundColor: "#ffffff",
-//     paddingHorizontal: 16,
-//     justifyContent: "flex-end",
-//   },
-//   photoContainer: {
-//     marginTop: 32,
-//     width: "100%",
-//     height: 240,
-//     borderRadius: 8,
-//     overflow: "hidden",
-//   },
-//   photo: {
-//     width: "100%",
-//     height: "100%",
-//     resizeMode: "cover",
-//   },
-//   commentsContainer: {
-//     flex: 1,
-//   },
-//   input: {
-//     padding: 16,
-//     marginBottom: 16,
-//     textAlign: "left",
-//     fontFamily: "roboto-r",
-//     fontSize: 16,
-//     color: "#212121",
-//     backgroundColor: "#F6F6F6",
-//     borderWidth: 1,
-//     borderRadius: 50,
-//     borderColor: "#E8E8E8",
-//   },
-//   btn: {
-//     position: "absolute",
-//     top: 8,
-//     right: 8,
-//     width: 34,
-//     height: 34,
-//     backgroundColor: "#FF6C00",
-//     borderRadius: 50,
-//     justifyContent: "center",
-//     alignItems: "center",
-//   },
-// });

@@ -1,4 +1,7 @@
 import {
+  Alert,
+} from "react-native";
+import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
   onAuthStateChanged,
@@ -28,7 +31,6 @@ export const authSighUp =
           avatar: user.photoURL,
         })
       );
-      console.log("user->", user);
     } catch (error) {
       console.log(error);
     }
@@ -39,8 +41,7 @@ export const authSighIn =
   async (dispatch, getState) => {
     try {
       const user = await signInWithEmailAndPassword(auth, email, password);
-      dispatch();
-      console.log("user->", user);
+      dispatch();c
     } catch (error) {
       console.log(error);
     }
@@ -76,6 +77,26 @@ export const authUpdateUserAvatar = ({ avatarUrl }) =>
   async (dispatch, getState) => {
     try {
       await updateProfile(auth.currentUser, { photoURL: avatarUrl });
+      const user = auth.currentUser;
+      
+      if (user) {
+        dispatch(authSlice.actions.updateUserProfile({
+          userId: user.uid,
+          login: user.displayName,
+          email: user.email,
+          avatar: user.photoURL
+        }));
+      };
+        
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  export const authDeleteUserAvatar = () =>
+  async (dispatch, getState) => {
+    try {
+      await updateProfile(auth.currentUser, { photoURL: "" });
       const user = auth.currentUser;
       
       if (user) {

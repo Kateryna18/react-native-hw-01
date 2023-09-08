@@ -17,7 +17,7 @@ import {
 import { AntDesign } from "@expo/vector-icons";
 import bckImage from "../../assets/photo-bg.png";
 import { useNavigation } from "@react-navigation/native";
-import { useSelector, useDispatch } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import {authSighUp} from "../../redux/auth/authOperations";
 
 export default function RegistrationScreen() {
@@ -63,7 +63,6 @@ export default function RegistrationScreen() {
 
     console.log(registerData);
     dispatch(authSighUp(registerData))
-    // navigation.navigate("Home")
     clearRegisterForm();
   };
 

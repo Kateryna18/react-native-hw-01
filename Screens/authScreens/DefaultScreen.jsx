@@ -3,7 +3,7 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { Feather } from "@expo/vector-icons";
 import { TouchableOpacity } from "react-native";
 import { useNavigation } from "@react-navigation/native";
-import { useSelector, useDispatch } from "react-redux";
+import { useDispatch } from "react-redux";
 import CreatePostsScreen from "../CreatePostsScreen";
 import ProfileScreen from "../ProfileScreen";
 import PostsScreen from "../nestedScreens/PostsScreen";
@@ -40,7 +40,6 @@ export default function DefaultScreen() {
           component={PostsScreen}
           options={{
             title: "Публікації",
-            // headerShown: false,
             headerTitleAlign: "center",
             tabBarIcon: ({ focused, size, color: tintColor }) => (
               <Feather name="grid" size={24} color={tintColor} />

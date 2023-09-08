@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import {
   Text,
   TouchableWithoutFeedback,
@@ -7,32 +7,93 @@ import {
   TouchableOpacity,
   StyleSheet,
 } from "react-native";
-import { Feather } from "@expo/vector-icons";
+import { Feather, AntDesign } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
+import { db } from "../firebase/config";
+import {
+  collection,
+  getDocs,
+  doc,
+} from "firebase/firestore";
 
-export default function ItemPost({post, isProfile = false}) {
+export default function ItemPost({ post, isProfile = false }) {
   const navigation = useNavigation();
+  const [counter, setCounter] = useState(0);
+  const [likeCount, setLikeCount] = useState(0);
+  const [isLiked, setIsLiked] = useState(false);
 
-  const {photo, title, location, geoLocation, id} = post;
+  const { photo, title, location, geoLocation, id } = post;
+
+  useEffect(() => {
+    getNumberOfComments(id);
+  }, []);
+
+  const getNumberOfComments = async (id) => {
+    try {
+      const allComments = [];
+
+      const refPost = doc(db, "posts", id);      
+      const snapshot = await getDocs(collection(refPost, "comments"));
+      snapshot.forEach((doc) => allComments.push({ ...doc.data() }))
+
+      setCounter(allComments.length);     
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const handleLikePress = () => {
+    if (isLiked) {
+      setLikeCount(likeCount - 1);
+      setIsLiked(false);
+    } else {
+      setLikeCount(likeCount + 1);
+      setIsLiked(true);
+    }
+  };
+
 
   return (
-    <TouchableWithoutFeedback >
+    <TouchableWithoutFeedback>
       <View style={styles.itemPost}>
         <Image style={styles.photoImg} source={{ uri: photo }} />
         <Text style={styles.itemTitle}>{title}</Text>
         <View style={styles.itemInfoBox}>
-          <TouchableOpacity style={styles.itemInfoButton} onPress={() => {navigation.navigate("CommentsScreen", {postId: id, photo})}} >
+          <View style={styles.statistics}>
+          <TouchableOpacity
+            style={styles.itemInfoButton}
+            onPress={() => {
+              navigation.navigate("CommentsScreen", { postId: id, photo });
+            }}
+          >
             <Feather
               name="message-circle"
               size={24}
-              color="#BDBDBD"
+              color={(counter > 0) ? "#FF6C00" : "#BDBDBD"}
               style={styles.itemInfoButtonIcon}
             />
-            <Text style={[styles.itemInfoButtonText, { color: "#BDBDBD" }]}>
-              0
+            <Text style={[styles.itemInfoButtonText, { color: (counter > 0) ? "#212121" : "#BDBDBD", }]}>
+              {counter}
             </Text>
           </TouchableOpacity>
-          <TouchableOpacity style={styles.itemInfoButton} onPress={() => {navigation.navigate("MapScreen", {geoLocation, title})}}>
+          {isProfile && (
+            <TouchableOpacity
+              style={styles.itemInfoButton}
+              onPress={handleLikePress}
+            >
+              <AntDesign name="like2" size={24} color={(likeCount > 0) ? "#FF6C00" : "#BDBDBD"} style={styles.itemInfoButtonIcon}/>
+              <Text style={[styles.itemInfoButtonText, { color: (likeCount > 0) ? "#212121" : "#BDBDBD", }]}>
+                {likeCount}
+              </Text>
+            </TouchableOpacity>
+          )}
+          </View>
+          <TouchableOpacity
+            style={styles.itemInfoButton}
+            onPress={() => {
+              navigation.navigate("MapScreen", { geoLocation, title });
+            }}
+          >
             <Feather
               name="map-pin"
               size={24}
@@ -86,4 +147,9 @@ const styles = StyleSheet.create({
   itemInfoButtonText: {
     fontSize: 16,
   },
+  statistics: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 24,
+  }
 });

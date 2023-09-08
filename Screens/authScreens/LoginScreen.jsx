@@ -15,7 +15,7 @@ import {
 } from "react-native";
 import bckImage from "../../assets/photo-bg.png";
 import { useNavigation } from "@react-navigation/native";
-import { useSelector, useDispatch } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import {authSighIn} from "../../redux/auth/authOperations";
 
 export default function LoginScreen() {
@@ -55,9 +55,7 @@ export default function LoginScreen() {
       return;
     }
 
-    console.log(registerData);
     dispatch(authSighIn(registerData))
-    // navigation.navigate("Home")
     clearRegisterForm();
   };
 

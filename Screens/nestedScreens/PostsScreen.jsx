@@ -9,7 +9,6 @@ import {
   StyleSheet,
   FlatList,
 } from "react-native";
-import { useRoute } from "@react-navigation/native";
 import ItemPost from "../../components/itemPost";
 import { db } from "../../firebase/config";
 import { collection, getDocs, doc } from 'firebase/firestore';
@@ -18,15 +17,16 @@ import { useSelector } from "react-redux";
 
 export default function PostsScreen() {
   const [posts, setPosts] = useState([]);
-  const { params } = useRoute();
-  const {login, email} = useSelector(state => state.auth)
-
-  // console.log("posts->", posts)
-  console.log(email)
+  const {login, email, avatar} = useSelector(state => state.auth)
   
-
   useEffect(() => {
     getAllPosts()
+
+    const timerId = setInterval(() => {
+      getAllPosts();
+    }, 30000);
+
+    return () => clearInterval(timerId);
   }, [])
 
   const getAllPosts = async() => {
@@ -34,14 +34,8 @@ export default function PostsScreen() {
       const allPosts = [];
 
       const snapshot = await getDocs(collection(db, 'posts'));
-      console.log("snapshot->", snapshot)
-
 
       snapshot.forEach((doc) => allPosts.push({ ...doc.data(), id: doc.id }));
-
-      // const sortedPostsByDate = allPosts.sort(
-      //   (firstPost, secondPost) => firstPost.date - secondPost.date
-      // );
 
       setPosts(allPosts);
     } catch (error) {
@@ -62,7 +56,7 @@ export default function PostsScreen() {
           <View style={styles.headerBox}>
             <View style={styles.avatarBox}>
               <Image
-                source={require("../../assets/avatar.png")}
+                source={{uri: avatar}}
                 style={styles.avatarImg}
               />
             </View>
@@ -90,20 +84,23 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16,
     backgroundColor: "#FFFFFF",
   },
-  postsBox: {},
   headerBox: {
     flexDirection: "row",
     alignItems: "center",
     marginBottom: 32,
   },
   avatarBox: {
+    width: 60,
+    height: 60,
+    backgroundColor: "#F6F6F6",
+    borderRadius: 16,
     marginRight: 8,
   },
   avatarImg: {
     width: 60,
     height: 60,
+    borderRadius: 16,
   },
-  userBox: {},
   nameUser: {
     fontFamily: "roboto-b",
     fontWeight: 700,

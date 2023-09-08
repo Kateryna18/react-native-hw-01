@@ -10,7 +10,6 @@ import {
   TouchableOpacity,
   KeyboardAvoidingView,
   StyleSheet,
-  Alert,
 } from "react-native";
 import { Camera } from "expo-camera";
 import * as MediaLibrary from "expo-media-library";
@@ -68,13 +67,6 @@ export default function CreatePostsScreen() {
         setPhoto(uri);
       }
       await MediaLibrary.createAssetAsync(uri);
-
-      // const location = await Location.getCurrentPositionAsync({});
-      // const coords = {
-      //   latitude: location.coords.latitude,
-      //   longitude: location.coords.longitude,
-      // };
-      // setGeoLocation(coords);
     }
   };
 
